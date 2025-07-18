@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <script type="module" src="js/firebase-config.js" defer></script>
+    <script type="module" src="js/home.js" defer></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/contactUs.css" />
+    <link rel="shortcut icon" href="images/Logo.png" type="image/x-icon" />
+    <script src="js/loadPages.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="logo" id="logo">
+        <a style="cursor: pointer" class="homeBtn"><h1>VivArq</h1></a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="allProjects.html">Proyectos</a></li>
+          <li><a href="allProfessionals.html">Profesionales</a></li>
+          <li><a href="contactUs.html" class="active">Contacto</a></li>
+        </ul>
+      </nav>
+      <div>
+        <div class="auth-buttons" id="authButtons">
+          <a href="login.html" class="btn btn-login">Acceder</a>
+        </div>
+        <div class="user-menu" id="userMenu">
+          <!-- Nuevo indicador de notificaciones al lado del menú de usuario -->
+          <div class="notification-indicator" id="userMenuNotification">0</div>
+            <div class="profile-icon">
+              <img id="userAvatar" src="" alt="Avatar" style="display: none" />
+              <i id="defaultIcon" class="fas fa-user"></i>
+            </div>
+          <div class="user-info">
+            <p class="user-name" id="userName">Irwin Williams</p>
+            <p class="accountTypeProfile" id="accountTypeProfile">
+              Personal account
+            </p>
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="chat.html" class="menu-item" id="messagesLink">
+              <i class="fas fa-envelope"></i>Mensajes
+              <span class="count">0</span>
+            </a>
+            <a href="#" class="menu-item" id="accountLink">
+              <i class="fas fa-user"></i>Mi Cuenta
+            </a>
+            <a href="#" class="menu-item" id="settingsLink">
+              <i class="fas fa-cog"></i>Configuración
+            </a>
+            <a href="#" class="menu-item" id="faqLink">
+              <i class="fa-solid fa-circle-question"></i>FAQ
+            </a>
+            <a href="#" class="menu-item logout" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hiddenMenuToggle">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="heroContact">
+      <div class="container text-center">
+        <h1>Contáctanos</h1>
+        <p class="mb-4">
+          ¡Nos encantaría saber de ti! Ponte en contacto con nuestro equipo si
+          tienes alguna pregunta, necesitas ayuda o quieres darnos tu opinión.
+        </p>
+      </div>
+    </section>
+
+    <!-- Contact Content -->
+    <section>
+      <div class="contact-container">
+        <!-- Contact Information -->
+        <div class="contact-info-section">
+          <h2 style="text-align: left">Contáctanos</h2>
+          <p>
+            ¿Tienes alguna duda o necesitas asistencia? Contáctanos y un miembro
+            de nuestro equipo te respondrá a la brevedad.
+          </p>
+
+          <div class="contact-method">
+            <i class="fas fa-map-marker-alt"></i>
+            <div class="contact-detail">
+              <h4>Nuestra ubicación</h4>
+              <p>CABA, Buenos Aires, Argentina</p>
+            </div>
+          </div>
+
+          <div class="contact-method">
+            <i class="fas fa-envelope"></i>
+            <div class="contact-detail">
+              <h4>Email de contacto</h4>
+              <p>info@vivarq.com</p>
+            </div>
+          </div>
+
+          <div class="contact-method">
+            <i class="fas fa-clock"></i>
+            <div class="contact-detail">
+              <h4>Horario de atención</h4>
+              <p>
+                Lunes - Viernes: 09hs - 18hs<br />Sábados: 10hs - 14hs <br />
+                Domingos: Cerrado
+              </p>
+            </div>
+          </div>
+
+          <div class="social-contact">
+            <h3>Seguinos en</h3>
+            <div class="social-contact-icons">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form-section">
+          <h2>Contáctate con nosotros</h2>
+          <form id="contactForm">
+            <div class="form-group">
+              <label for="name">Nombre y apellido</label>
+              <input type="text" id="name" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Correo electrónico</label>
+              <input type="email" id="email" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label for="subject">Asunto</label>
+              <select id="subject" class="form-control" required>
+                <option value="" selected disabled>Elije un asunto</option>
+                <option value="Consulta General">Consulta General</option>
+                <option value="Soporte Técnico">Soporte Técnico</option>
+                <option value="Sugerencias">Sugerencias</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Mensaje</label>
+              <textarea id="message" class="form-control" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              Enviar mensaje
+            </button>
+
+            <div id="formMessage" class="form-message"></div>
+          </form>
+        </div>
+
+        <!-- Map -->
+        <div class="map-container">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d419784.7531915864!2d-58.83123709315069!3d-34.716064853019894!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcca3d05457fbb%3A0xe160f4fce7f7c017!2sCdad.%20Aut%C3%B3noma%20de%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1743652623782!5m2!1ses!2sar"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3>VivArq</h3>
+          <p>
+            Conectando profesionales de la construcción con Clientes en
+            Argentina.
+          </p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h4>Enlaces</h4>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="allProfessionals.html">Profesionales</a></li>
+            <li><a href="allProjects.html">Proyectos</a></li>
+            <li><a href="contactUs.html">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="faq.html">Preguntas Frecuentes</a></li>
+            <li><a href="terms&conditions.html">Términos y Condiciones</a></li>
+            <li><a href="#privacidad">Política de Privacidad</a></li>
+            <li><a href="#ayuda">Ayuda</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contacto</h4>
+          <ul class="contact-info">
+            <li>
+              <i class="fas fa-map-marker-alt"></i> Buenos Aires, Argentina
+            </li>
+            <!-- <li><i class="fas fa-phone"></i> +54 11 1234-5678</li> -->
+            <li id="openModalBtnEmail" style="cursor: pointer">
+              <i class="fas fa-envelope"></i><a> info@vivarq.com.ar</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 VivArq. Todos los derechos reservados.</p>
+        <span
+          ><p>
+            Creado por
+            <a href="https://www.instagram.com/nicocorera" target="_blank"
+              >Nicolás Corera</a
+            >
+          </p></span
+        >
+      </div>
+    </footer>
+    <div id="emailModal" class="modalEmail">
+      <div class="modal-contentEmail">
+        <span class="close-btnEmail">&times;</span>
+        <h2>Contacto por Email</h2>
+        <form
+          id="emailForm"
+          action="mailto:info@vivarq.com.ar"
+          method="POST"
+          enctype="text/plain"
+          class="formEmial"
+        >
+          <label class="labelEmail" for="subject">Asunto:</label>
+          <select id="subject" name="subject" class="subjectEmail">
+            <option value="Consulta General">Consulta General</option>
+            <option value="Soporte Técnico">Soporte Técnico</option>
+            <option value="Sugerencias">Sugerencias</option>
+          </select>
+          <button class="btnEmail" type="submit">
+            <i class="fa-solid fa-envelope"></i> Redactar Correo
+          </button>
+        </form>
+      </div>
+    </div>
+    <script>
+      // Abre el modal
+      const modal = document.getElementById("emailModal");
+      const openModalBtn = document.getElementById("openModalBtnEmail");
+      const closeBtn = document.getElementsByClassName("close-btnEmail")[0];
+
+      // Abre el modal cuando se hace clic en el botón
+      openModalBtn.onclick = function () {
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden";
+      };
+
+      // Cierra el modal cuando se hace clic en el botón de cierre
+
+      closeBtn.onclick = function () {
+        const modalContent = document.querySelector(".modal-contentEmail");
+        const closeAnimation = modalContent.animate(
+          [
+            { transform: "scale(1)", opacity: 1 },
+            { transform: "scale(0.9)", opacity: 0 },
+          ],
+          {
+            duration: 400,
+            easing: "ease-out",
+          }
+        );
+        closeAnimation.onfinish = function () {
+          modal.style.display = "none";
+          document.body.style.overflow = "auto";
+        };
+      };
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          const modalContent = document.querySelector(".modal-contentEmail");
+          const closeAnimation = modalContent.animate(
+            [
+              { transform: "scale(1)", opacity: 1 },
+              { transform: "scale(0.9)", opacity: 0 },
+            ],
+            {
+              duration: 400,
+              easing: "ease-out",
+            }
+          );
+          closeAnimation.onfinish = function () {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+          };
+        }
+      };
+
+      // Opcional: Si deseas que el formulario se envíe automáticamente al hacer clic en enviar:
+      const emailForm = document.getElementById("emailForm");
+      emailForm.onsubmit = function (event) {
+        event.preventDefault();
+        const subject = document.getElementById("subject").value;
+
+        // Abre el cliente de correo con el asunto y cuerpo seleccionados
+        window.location.href = `mailto:info@vivarq.com.ar?subject=${encodeURIComponent(
+          subject
+        )}`;
+        modal.style.display = "none"; // Cierra el modal después de enviar
+      };
+    </script>
+
+    <!-- JavaScript -->
+    <script>
+      // Mobile Menu Toggle
+      document
+        .getElementById("menuToggle")
+        .addEventListener("click", function () {
+          document.querySelector("nav ul").classList.toggle("active");
+        });
+
+      // FAQ Toggle
+      const faqQuestions = document.querySelectorAll(".faq-question");
+
+      faqQuestions.forEach((question) => {
+        question.addEventListener("click", () => {
+          const answer = question.nextElementSibling;
+          const isActive = question.classList.contains("active");
+
+          // Close all other open questions
+          faqQuestions.forEach((q) => {
+            q.classList.remove("active");
+            q.nextElementSibling.style.display = "none";
+          });
+
+          // Toggle current question
+          if (!isActive) {
+            question.classList.add("active");
+            answer.style.display = "block";
+          }
+        });
+      });
+
+      // Form Submission
+      document
+        .getElementById("contactForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Basic form validation
+          const name = document.getElementById("name").value;
+          const email = document.getElementById("email").value;
+          const subject = document.getElementById("subject").value;
+          const message = document.getElementById("message").value;
+
+          if (name && email && subject && message) {
+            // In a real application, you would send this data to your server
+            // For this demo, we'll just show a success message
+
+            const formMessage = document.getElementById("formMessage");
+            formMessage.className = "form-message success";
+            formMessage.innerHTML =
+              "¡Gracias! Tu mensaje ha sido enviado con exito";
+
+            // Reset form
+            document.getElementById("contactForm").reset();
+
+            // Hide message after 5 seconds
+            setTimeout(() => {
+              formMessage.className = "form-message";
+              formMessage.innerHTML = "";
+            }, 5000);
+          } else {
+            const formMessage = document.getElementById("formMessage");
+            formMessage.className = "form-message error";
+            formMessage.innerHTML = "Porfavor completa todos los campos.";
+
+            // Hide message after 5 seconds
+            setTimeout(() => {
+              formMessage.className = "form-message";
+              formMessage.innerHTML = "";
+            }, 5000);
+          }
+        });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        const menuToggle = document.getElementById("menuToggle");
+        const navMenu = document.querySelector(".navbar nav");
+        const userMenu = document.getElementById("userMenu");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const authButtons = document.getElementById("authButtons");
+
+        // Aplicar siempre el estilo con fondo
+        navbar.classList.add("solidFlex");
+
+        // Mostrar/ocultar el menú de navegación en móvil
+        menuToggle.addEventListener("click", function () {
+          navMenu.classList.toggle("active");
+        });
+
+        // Cerrar el menú de navegación al hacer clic fuera
+        document.addEventListener("click", function (event) {
+          if (
+            !navMenu.contains(event.target) &&
+            !menuToggle.contains(event.target) &&
+            navMenu.classList.contains("active")
+          ) {
+            navMenu.classList.remove("active");
+          }
+        });
+        if (userMenu) {
+          userMenu.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle("active");
+          });
+
+          // Cerrar el menú de usuario al hacer clic fuera
+          document.addEventListener("click", function (event) {
+            if (
+              !dropdownMenu.contains(event.target) &&
+              dropdownMenu.classList.contains("active")
+            ) {
+              dropdownMenu.classList.remove("active");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Cómputos</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <script type="module" src="js/firebase-config.js" defer></script>
+    <script type="module" src="js/home.js" defer></script>
+    <script type="module" src="js/taxs.js" defer></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/taxs.css" />
+    <link rel="shortcut icon" href="images/Logo.png" type="image/x-icon" />
+    <script src="js/loadPages.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo" id="logo">
+        <a style="cursor: pointer" class="homeBtn"><h1>VivArq</h1></a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="allProjects.html">Proyectos</a></li>
+          <li><a href="allProfessionals.html">Profesionales</a></li>
+          <li><a href="contactUs.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div>
+        <div class="auth-buttons" id="authButtons">
+          <a href="login.html" class="btn btn-login">Acceder</a>
+        </div>
+        <div class="user-menu" id="userMenu">
+          <!-- Nuevo indicador de notificaciones al lado del menú de usuario -->
+          <div class="notification-indicator" id="userMenuNotification">0</div>
+            <div class="profile-icon">
+              <img id="userAvatar" src="" alt="Avatar" style="display: none" />
+              <i id="defaultIcon" class="fas fa-user"></i>
+            </div>
+          <div class="user-info">
+            <p class="user-name" id="userName">Irwin Williams</p>
+            <p class="accountTypeProfile" id="accountTypeProfile">
+              Personal account
+            </p>
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="chat.html" class="menu-item" id="messagesLink">
+              <i class="fas fa-envelope"></i>Mensajes
+              <span class="count">0</span>
+            </a>
+            <a href="#" class="menu-item" id="accountLink">
+              <i class="fas fa-user"></i>Mi Cuenta
+            </a>
+            <a href="#" class="menu-item" id="settingsLink">
+              <i class="fas fa-cog"></i>Configuración
+            </a>
+            <a href="#" class="menu-item" id="faqLink">
+              <i class="fa-solid fa-circle-question"></i>FAQ
+            </a>
+            <a href="#" class="menu-item logout" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hiddenMenuToggle">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+    <main class="container taxs-container">
+      <section class="taxs-header">
+        <h1>Mis Cómputos</h1>
+        <div class="taxs-actions">
+          <button id="newCalculationBtn" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Nuevo Cómputo
+          </button>
+          <div class="taxs-filter">
+            <select id="statusFilter" class="form-select">
+              <option value="all">Todos</option>
+              <option value="draft">Borradores</option>
+              <option value="completed">Completos</option>
+            </select>
+          </div>
+          <div class="taxs-search">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Buscar cómputos..."
+              class="form-control"
+            />
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+      </section>
+      <section class="taxs-list">
+        <div class="taxs-list-header">
+          <span class="taxs-name">Nombre del Cliente</span>
+          <span class="taxs-project">Proyecto</span>
+          <span class="taxs-date">Fecha</span>
+          <span class="taxs-status">Estado</span>
+          <span class="taxs-actions">Acciones</span>
+        </div>
+        <div id="taxsContainer" class="taxs-items">
+          <!-- Los cómputos se cargarán aquí dinámicamente -->
+          <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Cargando cómputos...</p>
+          </div>
+        </div>
+      </section>
+      <!-- Paginación -->
+      <div class="taxs-pagination">
+        <button id="prevPage" class="btn btn-outline" disabled>
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <span id="pageInfo">Página 1</span>
+        <button id="nextPage" class="btn btn-outline">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </main>
+    <!-- Modal para confirmación de eliminación -->
+    <div id="deleteModal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Confirmar Eliminación</h2>
+        <p>
+          ¿Estás seguro de que deseas eliminar este cómputo? Esta acción no se
+          puede deshacer.
+        </p>
+        <div class="modal-actions">
+          <button id="cancelDelete" class="btn btn-outline">Cancelar</button>
+          <button id="confirmDelete" class="btn btn-danger">Eliminar</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        const menuToggle = document.getElementById("menuToggle");
+        const navMenu = document.querySelector(".navbar nav");
+        const userMenu = document.getElementById("userMenu");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const authButtons = document.getElementById("authButtons");
+
+        // Aplicar siempre el estilo con fondo
+        navbar.classList.add("solidFlex");
+
+        // Mostrar/ocultar el menú de navegación en móvil
+        menuToggle.addEventListener("click", function () {
+          navMenu.classList.toggle("active");
+        });
+
+        // Cerrar el menú de navegación al hacer clic fuera
+        document.addEventListener("click", function (event) {
+          if (
+            !navMenu.contains(event.target) &&
+            !menuToggle.contains(event.target) &&
+            navMenu.classList.contains("active")
+          ) {
+            navMenu.classList.remove("active");
+          }
+        });
+        if (userMenu) {
+          userMenu.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle("active");
+          });
+
+          // Cerrar el menú de usuario al hacer clic fuera
+          document.addEventListener("click", function (event) {
+            if (
+              !dropdownMenu.contains(event.target) &&
+              dropdownMenu.classList.contains("active")
+            ) {
+              dropdownMenu.classList.remove("active");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Configuration</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <script type="module" src="js/firebase-config.js" defer></script>
+    <script type="module" src="js/home.js" defer></script>
+    <script type="module" src="js/configPage.js" defer></script>
+    <script type="module" src="js/integration.js" defer></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/config-styles.css" />
+    <link rel="shortcut icon" href="images/Logo.png" type="image/x-icon" />
+    <script src="js/loadPages.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo" id="logo">
+        <a style="cursor: pointer" class="homeBtn"><h1>VivArq</h1></a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="allProjects.html">Proyectos</a></li>
+          <li><a href="allProfessionals.html">Profesionales</a></li>
+          <li><a href="contactUs.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div>
+        <div class="auth-buttons" id="authButtons">
+          <a href="login.html" class="btn btn-login">Acceder</a>
+        </div>
+        <div class="user-menu" id="userMenu">
+          <!-- Nuevo indicador de notificaciones al lado del menú de usuario -->
+          <div class="notification-indicator" id="userMenuNotification">0</div>
+            <div class="profile-icon">
+              <img id="userAvatar" src="" alt="Avatar" style="display: none" />
+              <i id="defaultIcon" class="fas fa-user"></i>
+            </div>
+          <div class="user-info">
+            <p class="user-name" id="userName">Irwin Williams</p>
+            <p class="accountTypeProfile" id="accountTypeProfile">
+              Personal account
+            </p>
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="chat.html" class="menu-item" id="messagesLink">
+              <i class="fas fa-envelope"></i>Mensajes
+              <span class="count">0</span>
+            </a>
+            <a href="#" class="menu-item" id="accountLink">
+              <i class="fas fa-user"></i>Mi Cuenta
+            </a>
+            <a href="#" class="menu-item" id="settingsLink">
+              <i class="fas fa-cog"></i>Configuración
+            </a>
+            <a href="#" class="menu-item" id="faqLink">
+              <i class="fa-solid fa-circle-question"></i>FAQ
+            </a>
+            <a href="#" class="menu-item logout" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hiddenMenuToggle">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+    <div class="config-container">
+      <div class="config-sidebar">
+        <h3>Configuración</h3>
+        <ul class="tab-links">
+          <li class="tab-link active" data-tab="account">
+            <i class="fas fa-user-cog"></i>
+            Configuración de la cuenta
+          </li>
+          <li class="tab-link" data-tab="subscription">
+            <i class="fas fa-credit-card"></i>
+            Planes y suscripciones
+          </li>
+          <li class="tab-link" data-tab="integrationsSection">
+            <i class="fas fa-plug"></i>
+            Integraciones
+          </li>
+        </ul>
+      </div>
+      <div class="config-content">
+        <div id="account" class="tab-content active">
+          <h2>Configuración de la cuenta</h2>
+          <div class="settings-section">
+            <div class="settings-header">
+              <h3>Información personal</h3>
+              <p>
+                Actualiza tus datos personales y tu información de contacto.
+              </p>
+            </div>
+            <form id="personalInfoForm" class="settings-form">
+              <div class="form-group">
+                <label for="firstName">Nombre</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  value="Cargando..."
+                />
+              </div>
+              <div class="form-group">
+                <label for="lastName">Apellido</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  value="Cargando..."
+                />
+              </div>
+              <div class="form-group">
+                <label for="location">Ubicación</label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  value="Cargando..."
+                />
+              </div>
+              <div class="form-group">
+                <label for="userPhone">Teléfono</label>
+                <input
+                  type="text"
+                  id="userPhone"
+                  name="userPhone"
+                  value="Cargando..."
+                />
+              </div>
+              <div
+                class="form-group"
+                id="userProfessionGeneral"
+                style="display: none"
+              >
+                <label for="userProfession">Profesión</label>
+                <input
+                  type="text"
+                  id="userProfession"
+                  name="userProfession"
+                  value="Cargando..."
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Guardar Cambios
+              </button>
+            </form>
+          </div>
+          <div class="settings-section">
+            <div class="settings-header">
+              <h3>Cambia la contraseña</h3>
+              <p>Actualiza tu contraseña para mayor seguridad.</p>
+            </div>
+            <form id="passwordForm" class="settings-form">
+              <div class="form-group">
+                <label for="currentPassword">Contraseña actual</label>
+                <div class="password-field">
+                  <input
+                    type="password"
+                    id="currentPassword"
+                    name="currentPassword"
+                  />
+                  <button
+                    type="button"
+                    class="toggle-password"
+                    data-target="currentPassword"
+                  >
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="newPassword">Nueva contraseña</label>
+                <div class="password-field">
+                  <input
+                    type="password"
+                    id="newPassword"
+                    name="newPassword"
+                    oninput="checkPasswordStrength()"
+                  />
+                  <button
+                    type="button"
+                    class="toggle-password"
+                    data-target="newPassword"
+                  >
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+                <div id="passwordStrength" class="password-strength"></div>
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Confirmar contraseña</label>
+                <div class="password-field">
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                  />
+                  <button
+                    type="button"
+                    class="toggle-password"
+                    data-target="confirmPassword"
+                  >
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Actualizar Contraseña
+              </button>
+            </form>
+          </div>
+          <div class="settings-section">
+            <div class="settings-header">
+              <h3>Zona administrativa</h3>
+              <p>Acciones permanentes que afectan tu cuenta.</p>
+            </div>
+            <div class="settings-form danger-zone">
+              <div class="danger-action">
+                <div>
+                  <h4>Eliminar cuenta</h4>
+                  <p>
+                    Una vez eliminada la cuenta, no habrá forma de recuperarla.
+                    Ésta acción es permanente.
+                  </p>
+                </div>
+                <button class="btn btn-error">Eliminar mi Cuenta</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="subscription" class="tab-content">
+          <h2>Planes y suscripciones</h2>
+          <div class="settings-section">
+            <div class="settings-header">
+              <h3>Plan actual</h3>
+              <p>Actualmente tienes el plan gratiuto.</p>
+            </div>
+            <div id="contratistPlans">
+              <div class="current-plan">
+                <div class="plan-badge premium">Gratis</div>
+                <div class="plan-details">
+                  <p class="plan-price">$0.00 <span>de por vida</span></p>
+                  <p class="plan-features-title">Funciones incluidas:</p>
+                  <ul class="plan-features">
+                    <li>
+                      <i class="fas fa-check"></i> Publicación de 3 proyectos
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Acceso a la información de
+                      profesionales verificados
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Sistema de calificación y
+                      opiniones
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Chat interno básico para
+                      contactar profesionales
+                    </li>
+                  </ul>
+                </div>
+                <div class="plan-actions">
+                  <button class="btn btn-secondary">Cambiar plan</button>
+                </div>
+              </div>
+              <div class="settings-header">
+                <h3>Planes disponibles</h3>
+              </div>
+              <div class="current-plan">
+                <div class="plan-badge premium">Pro</div>
+                <div class="plan-details">
+                  <p class="plan-price">$25.00 <span>/mes</span></p>
+                  <p class="plan-features-title">Funciones incluidas:</p>
+                  <ul class="plan-features">
+                    <li>
+                      <i class="fas fa-check"></i> Publicación de 10 proyectos
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Visibilidad destacada de
+                      proyectos
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Acceso a filtro avanzado de
+                      profesionales
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Consultas ilimitadas a
+                      perfiles verificados
+                    </li>
+                  </ul>
+                </div>
+                <div class="plan-actions">
+                  <button class="btn btn-login">Seleccionar plan</button>
+                </div>
+              </div>
+              <div class="current-plan">
+                <div class="plan-badge premium">Corporativo</div>
+                <div class="plan-details">
+                  <p class="plan-price">$80.00 <span>/mes</span></p>
+                  <p class="plan-features-title">Funciones incluidas:</p>
+                  <ul class="plan-features">
+                    <li>
+                      <i class="fas fa-check"></i> Publicación ilimitada de
+                      proyectos
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Publicación destacada de
+                      proyectos
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Asesoramiento estratégico
+                      personalizado
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Acceso prioritario a los
+                      mejores perfiles de profesionales
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Soporte exclusivo para
+                      resolución de disputas
+                    </li>
+                  </ul>
+                </div>
+                <div class="plan-actions">
+                  <button class="btn btn-login">Seleccionar plan</button>
+                </div>
+              </div>
+            </div>
+            <div id="professionalPlans">
+              <div class="current-plan">
+                <div class="plan-badge premium">Gratis</div>
+                <div class="plan-details">
+                  <p class="plan-price">$0.00 <span>de por vida</span></p>
+                  <p class="plan-features-title">Funciones incluidas:</p>
+                  <ul class="plan-features">
+                    <li>
+                      <i class="fas fa-check"></i> Publicación limitada de
+                      servicios
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Acceso limitado a proyectos
+                      de Clientes
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Opiniones y calificaciones
+                      visibles
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Chat interno para
+                      negociaciones básicas
+                    </li>
+                  </ul>
+                </div>
+                <div class="plan-actions">
+                  <button class="btn btn-secondary">Cambiar plan</button>
+                </div>
+              </div>
+              <div class="settings-header">
+                <h3>Planes disponibles</h3>
+              </div>
+              <div class="current-plan">
+                <div class="plan-badge premium">Pro</div>
+                <div class="plan-details">
+                  <p class="plan-price">$20.00 <span>/mes</span></p>
+                  <p class="plan-features-title">Funciones incluidas:</p>
+                  <ul class="plan-features">
+                    <li>
+                      <i class="fas fa-check"></i> Todas las funciones gratuitas
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Publicación ilimitada de
+                      servicios
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Acceso a proyectos destacados
+                      de Clientes
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Acceso al "Organizador de
+                      Tareas"
+                    </li>
+                  </ul>
+                </div>
+                <div class="plan-actions">
+                  <button class="btn btn-login">Seleccionar plan</button>
+                </div>
+              </div>
+              <div class="current-plan">
+                <div class="plan-badge premium">Elite</div>
+                <div class="plan-details">
+                  <p class="plan-price">$60.00 <span>/mes</span></p>
+                  <p class="plan-features-title">Funciones incluidas:</p>
+                  <ul class="plan-features">
+                    <li>
+                      <i class="fas fa-check"></i> Todo lo del Plan Pro más
+                      visibilidad destacada
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Acceso prioritario a
+                      proyectos de Clientes
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Uso ilimitado de contratos
+                      digitales con firma electrónica
+                    </li>
+                    <li>
+                      <i class="fas fa-check"></i> Soporte personalizado 24/7
+                    </li>
+                  </ul>
+                </div>
+                <div class="plan-actions">
+                  <button class="btn btn-login">Seleccionar plan</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="settings-section" style="display: none">
+            <div class="settings-header">
+              <h3>Payment Method</h3>
+              <p>Manage your payment methods and billing information</p>
+            </div>
+            <div class="payment-methods">
+              <div class="payment-card">
+                <div class="card-icon">
+                  <i class="fab fa-cc-visa"></i>
+                </div>
+                <div class="card-details">
+                  <p class="card-name">Visa ending in 4242</p>
+                  <p class="card-expiry">Expires 06/2026</p>
+                </div>
+                <div class="card-actions">
+                  <button class="btn btn-small btn-primary">Edit</button>
+                  <button class="btn btn-small btn-login">Remove</button>
+                </div>
+              </div>
+              <button class="btn btn-login add-payment">
+                <i class="fas fa-plus"></i> Add Payment Method
+              </button>
+            </div>
+          </div>
+          <div class="settings-section" style="display: none">
+            <div class="settings-header">
+              <h3>Billing History</h3>
+              <p>View your past invoices and payment history</p>
+            </div>
+            <div class="billing-history">
+              <table class="billing-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Invoice</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Mar 15, 2025</td>
+                    <td>Premium Plan - Monthly</td>
+                    <td>$19.99</td>
+                    <td><span class="status-paid">Paid</span></td>
+                    <td>
+                      <a href="#"><i class="fas fa-download"></i></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Feb 15, 2025</td>
+                    <td>Premium Plan - Monthly</td>
+                    <td>$19.99</td>
+                    <td><span class="status-paid">Paid</span></td>
+                    <td>
+                      <a href="#"><i class="fas fa-download"></i></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Jan 15, 2025</td>
+                    <td>Premium Plan - Monthly</td>
+                    <td>$19.99</td>
+                    <td><span class="status-paid">Paid</span></td>
+                    <td>
+                      <a href="#"><i class="fas fa-download"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- This is a partial HTML file showing the updated integrations section -->
+        <div class="settings-section tab-content" id="integrationsSection">
+          <!-- Connected Integrations Section -->
+          <div class="settings-header">
+            <h3>Integraciones Conectadas</h3>
+            <p>Servicios que has conectado a tu cuenta</p>
+          </div>
+          <div class="integrations-list" id="connected-integrations">
+            <!-- Connected integrations will be added here dynamically -->
+            <div class="no-integrations" id="no-connected-integrations">
+              <i class="fas fa-plug"></i>
+              <h3>No hay integraciones conectadas</h3>
+              <p>
+                Conecta servicios de la lista de abajo para mejorar tu
+                experiencia
+              </p>
+            </div>
+          </div>
+
+          <!-- Available Integrations Section -->
+          <div class="settings-header">
+            <h3>Integraciones Disponibles</h3>
+            <p>Conéctate con otros servicios para mejorar tu experiencia</p>
+          </div>
+          <div class="available-integrations" id="available-integrations">
+            <!-- Available integration cards will be populated here dynamically -->
+            <div
+              class="integration-card"
+              data-integration-id="linkedin"
+              id="linkedinCard"
+            >
+              <div class="integration-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </div>
+              <h4>LinkedIn</h4>
+              <p>
+                Conecta tu cuenta de LinkedIn para compartir más información
+                profesional
+              </p>
+              <button class="btn btn-primary connect-integration">
+                Conectar
+              </button>
+            </div>
+
+            <div class="integration-card" data-integration-id="facebook">
+              <div class="integration-icon">
+                <i class="fab fa-facebook"></i>
+              </div>
+              <h4>Facebook</h4>
+              <p>
+                Conecta tu cuenta de Facebook para compartir actualizaciones y
+                contenido
+              </p>
+              <button class="btn btn-primary connect-integration">
+                Conectar
+              </button>
+            </div>
+
+            <!-- These will be shown based on account type -->
+            <div class="integration-card" data-integration-id="github">
+              <div class="integration-icon">
+                <i class="fab fa-github"></i>
+              </div>
+              <h4>GitHub</h4>
+              <p>
+                Conecta tu repositorio de GitHub para mostrar tu portafolio de
+                proyectos
+              </p>
+              <button class="btn btn-primary connect-integration">
+                Conectar
+              </button>
+            </div>
+
+            <div class="integration-card" data-integration-id="behance">
+              <div class="integration-icon">
+                <i class="fab fa-behance"></i>
+              </div>
+              <h4>Behance</h4>
+              <p>Conecta tu portafolio de Behance para compartir tus diseños</p>
+              <button class="btn btn-primary connect-integration">
+                Conectar
+              </button>
+            </div>
+
+            <div class="integration-card" data-integration-id="google">
+              <div class="integration-icon">
+                <i class="fab fa-google-drive"></i>
+              </div>
+              <h4>Google Drive</h4>
+              <p>
+                Conecta tu Google Drive para acceder a tus archivos de proyectos
+              </p>
+              <button class="btn btn-primary connect-integration">
+                Conectar
+              </button>
+            </div>
+
+            <div class="integration-card" data-integration-id="whatsapp">
+              <div class="integration-icon">
+                <i class="fab fa-whatsapp"></i>
+              </div>
+              <h4>WhatsApp</h4>
+              <p>Conecta WhatsApp para recibir notificaciones importantes</p>
+              <button class="btn btn-primary connect-integration">
+                Conectar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3>VivArq</h3>
+          <p>
+            Conectando profesionales de la construcción con Clientes en
+            Argentina.
+          </p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h4>Enlaces</h4>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="allProfessionals.html">Profesionales</a></li>
+            <li><a href="allProjects.html">Proyectos</a></li>
+            <li><a href="contactUs.html">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="faq.html">Preguntas Frecuentes</a></li>
+            <li><a href="terms&conditions.html">Términos y Condiciones</a></li>
+            <li><a href="#privacidad">Política de Privacidad</a></li>
+            <li><a href="#ayuda">Ayuda</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contacto</h4>
+          <ul class="contact-info">
+            <li>
+              <i class="fas fa-map-marker-alt"></i> Buenos Aires, Argentina
+            </li>
+            <li id="openModalBtnEmail" style="cursor: pointer">
+              <i class="fas fa-envelope"></i><a> info@vivarq.com.ar</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 VivArq. Todos los derechos reservados.</p>
+        <span
+          ><p>
+            Creado por
+            <a href="https://www.instagram.com/nicocorera" target="_blank"
+              >Nicolás Corera</a
+            >
+          </p></span
+        >
+      </div>
+    </footer>
+    <div id="emailModal" class="modalEmail">
+      <div class="modal-contentEmail">
+        <span class="close-btnEmail">&times;</span>
+        <h2>Contacto por Email</h2>
+        <form
+          id="emailForm"
+          action="mailto:info@vivarq.com.ar"
+          method="POST"
+          enctype="text/plain"
+          class="formEmial"
+        >
+          <label class="labelEmail" for="subject">Asunto:</label>
+          <select id="subject" name="subject" class="subjectEmail">
+            <option value="Consulta General">Consulta General</option>
+            <option value="Soporte Técnico">Soporte Técnico</option>
+            <option value="Sugerencias">Sugerencias</option>
+          </select>
+          <button class="btnEmail" type="submit">
+            <i class="fa-solid fa-envelope"></i> Redactar Correo
+          </button>
+        </form>
+      </div>
+    </div>
+    <div id="delete-modal" class="modalDelete">
+      <div class="modal-contentDelete">
+        <div class="modal-headerDelete">
+          <h3><i class="fas fa-exclamation-circle"></i> Eliminar cuenta</h3>
+          <span class="close-modalDelete">&times;</span>
+        </div>
+        <div class="modal-bodyDelete">
+          <p>
+            ¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se
+            puede deshacer y perderás todas tus notas.
+          </p>
+          <form id="delete-account-form">
+            <div class="form-group">
+              <label for="delete-password"
+                >Ingresa tu contraseña para confirmar</label
+              >
+              <input
+                type="password"
+                id="delete-password"
+                placeholder="Contraseña"
+                required
+              />
+            </div>
+            <div class="modal-actionsDelete">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="cancel-delete"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                id="confirm-delete-btn"
+                class="btn btn-error"
+              >
+                Eliminar mi cuenta
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      const modal = document.getElementById("emailModal");
+      const openModalBtn = document.getElementById("openModalBtnEmail");
+      const closeBtn = document.getElementsByClassName("close-btnEmail")[0];
+      openModalBtn.onclick = function () {
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden";
+      };
+      closeBtn.onclick = function () {
+        const modalContent = document.querySelector(".modal-contentEmail");
+        const closeAnimation = modalContent.animate(
+          [
+            { transform: "scale(1)", opacity: 1 },
+            { transform: "scale(0.9)", opacity: 0 },
+          ],
+          {
+            duration: 400,
+            easing: "ease-out",
+          }
+        );
+        closeAnimation.onfinish = function () {
+          modal.style.display = "none";
+          document.body.style.overflow = "auto";
+        };
+      };
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          const modalContent = document.querySelector(".modal-contentEmail");
+          const closeAnimation = modalContent.animate(
+            [
+              { transform: "scale(1)", opacity: 1 },
+              { transform: "scale(0.9)", opacity: 0 },
+            ],
+            {
+              duration: 400,
+              easing: "ease-out",
+            }
+          );
+          closeAnimation.onfinish = function () {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+          };
+        }
+      };
+      const emailForm = document.getElementById("emailForm");
+      emailForm.onsubmit = function (event) {
+        event.preventDefault();
+        const subject = document.getElementById("subject").value;
+        window.location.href = `mailto:info@vivarq.com.ar?subject=${encodeURIComponent(
+          subject
+        )}`;
+        modal.style.display = "none"; // Cierra el modal después de enviar
+      };
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const userId = localStorage.getItem("logguedInUserId");
+        if (!userId) {
+          window.location.href = `login.html?redirect=config.html?id=${userId}`;
+          return;
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlUserId = urlParams.get("id");
+        if (!urlUserId || urlUserId !== userId) {
+          window.location.href = `config.html?id=${userId}`;
+        }
+      });
+    </script>
+    <script>
+      document.querySelectorAll(".toggle-password").forEach((button) => {
+        button.addEventListener("click", function () {
+          const targetId = this.getAttribute("data-target");
+          const input = document.getElementById(targetId);
+          const icon = this.querySelector("i");
+          const type = input.type === "password" ? "text" : "password";
+          input.type = type;
+          icon.classList.toggle("fa-eye"); // Ojo cerrado
+          icon.classList.toggle("fa-eye-slash"); // Ojo abierto
+        });
+      });
+      function checkPasswordStrength() {
+        const password = document.getElementById("newPassword").value;
+        const strength = document.getElementById("passwordStrength");
+        const weak = /^(?=.*[a-z]).{6,}$/;
+        const medium = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+        const strong = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+        if (strong.test(password)) {
+          strength.textContent = "Contraseña segura";
+          strength.style.color = "green";
+        } else if (medium.test(password)) {
+          strength.textContent = "Contraseña media";
+          strength.style.color = "orange";
+        } else if (weak.test(password)) {
+          strength.textContent = "Contraseña débil";
+          strength.style.color = "red";
+        } else {
+          strength.textContent = "";
+        }
+      }
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        const menuToggle = document.getElementById("menuToggle");
+        const navMenu = document.querySelector(".navbar nav");
+        const userMenu = document.getElementById("userMenu");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const authButtons = document.getElementById("authButtons");
+
+        // Aplicar siempre el estilo con fondo
+        navbar.classList.add("solidFlex");
+
+        // Mostrar/ocultar el menú de navegación en móvil
+        menuToggle.addEventListener("click", function () {
+          navMenu.classList.toggle("active");
+        });
+
+        // Cerrar el menú de navegación al hacer clic fuera
+        document.addEventListener("click", function (event) {
+          if (
+            !navMenu.contains(event.target) &&
+            !menuToggle.contains(event.target) &&
+            navMenu.classList.contains("active")
+          ) {
+            navMenu.classList.remove("active");
+          }
+        });
+        if (userMenu) {
+          userMenu.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle("active");
+          });
+
+          // Cerrar el menú de usuario al hacer clic fuera
+          document.addEventListener("click", function (event) {
+            if (
+              !dropdownMenu.contains(event.target) &&
+              dropdownMenu.classList.contains("active")
+            ) {
+              dropdownMenu.classList.remove("active");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

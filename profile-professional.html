@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil Profesional - VivArq</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/profile.css" />
+    <link rel="stylesheet" href="css/taxs.css" />
+    <link rel="stylesheet" href="css/folios.css" />
+    <script type="module" src="js/firebase-config.js" defer></script>
+    <script type="module" src="js/home.js" defer></script>
+    <script type="module" src="js/organizarApp.js" defer></script>
+    <script type="module" src="js/folios.js" defer></script>
+    <script type="module" src="js/profileProfessional.js" defer></script>
+    <script type="module" src="js/taxs.js" defer></script>
+    <link rel="shortcut icon" href="images/Logo.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"
+    />
+    <script src="js/loadPages.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo" id="logo">
+        <a style="cursor: pointer" class="homeBtn"><h1>VivArq</h1></a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="allProjects.html">Proyectos</a></li>
+          <li><a href="allProfessionals.html">Profesionales</a></li>
+          <li><a href="contactUs.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div>
+        <div class="auth-buttons" id="authButtons">
+          <a href="login.html" class="btn btn-login">Acceder</a>
+        </div>
+        <div class="user-menu" id="userMenu">
+          <!-- Nuevo indicador de notificaciones al lado del menú de usuario -->
+          <div class="notification-indicator" id="userMenuNotification">0</div>
+            <div class="profile-icon">
+              <img id="userAvatar" src="" alt="Avatar" style="display: none" />
+              <i id="defaultIcon" class="fas fa-user"></i>
+            </div>
+          <div class="user-info">
+            <p class="user-name" id="userName">Cargando...</p>
+            <p class="accountTypeProfile" id="accountTypeProfile">
+              Cargando...
+            </p>
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="chat.html" class="menu-item" id="messagesLink">
+              <i class="fas fa-envelope"></i>Mensajes
+              <span class="count">0</span>
+            </a>
+            <a href="#" class="menu-item" id="accountLink">
+              <i class="fas fa-user"></i>Mi Cuenta
+            </a>
+            <a href="#" class="menu-item" id="settingsLink">
+              <i class="fas fa-cog"></i>Configuración
+            </a>
+            <a href="#" class="menu-item" id="faqLink">
+              <i class="fa-solid fa-circle-question"></i>FAQ
+            </a>
+            <a href="#" class="menu-item logout" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hiddenMenuToggle">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+
+    <div id="loading-overlay" class="loadingOverlay">
+      <div class="spinner" class="spinner"></div>
+    </div>
+
+    <div class="messageDiv" id="successMessage" style="display: none"></div>
+    <div class="messageDiv" id="errorMessage" style="display: none"></div>
+    <div class="messageDiv" id="loadingMessage" style="display: none"></div>
+    <main>
+      <div class="container profile-container">
+        <div class="profile-header">
+          <div class="profile-info">
+            <div class="profile-image-section">
+              <h3>Imagen de perfil</h3>
+              <div id="profile-image-container" class="profile-image-container">
+                <div
+                  id="profile-image-preview"
+                  class="profile-image-preview-container"
+                >
+                  <!-- Aquí se mostrará la imagen seleccionada o existente -->
+                  <div class="upload-placeholder" id="uploadImgPlaceholder">
+                    Seleccione una imagen de perfil
+                  </div>
+                </div>
+                <div id="profile-image-upload-section">
+                  <div class="profile-image-controls">
+                    <input
+                      type="file"
+                      id="profile-image-input"
+                      accept="image/*"
+                      class="file-input"
+                    />
+                    <label for="profile-image-input" class="file-input-label">
+                      <i class="fas fa-upload"></i> Seleccionar imagen
+                    </label>
+                    <button
+                      id="edit-profile-image-btn"
+                      class="btn btn-secondary"
+                      style="display: none"
+                    >
+                      <i class="fas fa-crop"></i> Ajustar imagen
+                    </button>
+                    <button
+                      id="upload-profile-image-btn"
+                      class="btn btn-primary"
+                      disabled
+                      type="button"
+                    >
+                      <i class="fas fa-cloud-upload-alt"></i> Subir imagen
+                    </button>
+                    <button
+                      id="delete-profile-image-btn"
+                      class="btn btn-danger"
+                      style="display: none"
+                    >
+                      <i class="fas fa-trash"></i> Eliminar imagen
+                    </button>
+                    <div class="profile-image-help">
+                      <p>
+                        Formatos admitidos: JPG, PNG, GIF. Tamaño máximo: 5MB.
+                      </p>
+                      <p>
+                        Para mejores resultados, utilice una imagen cuadrada.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal del editor de imagen mejorado -->
+            <div id="image-editor-modal" class="image-editor-modal">
+              <div class="image-editor-content">
+                <span class="close-modal" id="close-modal">&times;</span>
+                <h3>Ajustar imagen de perfil</h3>
+
+                <div class="editor-instructions">
+                  Arrastre la imagen para ajustar la posición y use la barra
+                  para ajustar el zoom
+                </div>
+
+                <div class="image-cropper-container">
+                  <div class="cropper-wrapper">
+                    <div class="cropper-area" id="cropper-area">
+                      <!-- La imagen se cargará aquí -->
+                      <div class="crop-guide"></div>
+                    </div>
+                  </div>
+
+                  <div class="zoom-control">
+                    <span class="zoom-icon">-</span>
+                    <input
+                      type="range"
+                      id="zoom-slider"
+                      class="zoom-slider"
+                      min="62"
+                      max="162"
+                      step="10"
+                      value="162"
+                    />
+                    <span class="zoom-icon">+</span>
+                  </div>
+                </div>
+
+                <div class="editor-actions">
+                  <button id="apply-crop" class="editor-button apply-crop">
+                    Aplicar cambios
+                  </button>
+                  <button id="cancel-crop" class="editor-button cancel-crop">
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h1 id="professional-name">Nombre del Profesional</h1>
+            <div class="profession" id="professional-profession">
+              Arquitecto
+            </div>
+            <div class="infoBottom">
+              <div class="location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span id="professional-location">Buenos Aires, Argentina</span>
+              </div>
+              <div class="professionalNumber">
+                <i class="fas fa-phone"></i>
+                <span id="professional-phone-number">11 0000-0000</span>
+              </div>
+            </div>
+
+            <div class="contact-actions">
+              <button
+                class="btn btn-primary"
+                id="contact-btn"
+                style="display: none"
+              >
+                <i class="fas fa-comment"></i> Contactar
+              </button>
+            </div>
+          </div>
+          <div class="actionButtons">
+            <button
+              type="button"
+              class="edit-profile-btn"
+              id="edit-profile-btn"
+            >
+              <i class="fas fa-edit"></i> Editar Perfil
+            </button>
+            <button
+              type="button"
+              class="cancel-profile-btn"
+              id="cancel-profile-btn"
+            >
+              <i class="far fa-circle-xmark"></i> Cancelar Cambios
+            </button>
+          </div>
+        </div>
+
+        <div class="profile-tabs">
+          <ul class="tabs">
+            <li class="tab active" data-tab="info">Información</li>
+            <li class="tab" data-tab="portfolio">Portfolio</li>
+            <li class="tab" data-tab="projectSave" id="projectSaveBtnTab">
+              Proyectos Guardados
+            </li>
+            <li class="tab" data-tab="organizar" id="tasks">
+              Orgazinador de Tareas
+            </li>
+            <li class="tab" data-tab="folios" id="folios">Folios</li>
+            <li class="tab" data-tab="computos" id="computos">Cómputos</li>
+          </ul>
+        </div>
+
+        <div class="profile-content">
+          <div class="tab-content active" id="info-content">
+            <div class="info-section">
+              <h3>Sobre mí</h3>
+              <p id="professional-about">
+                Parece que aún no has escrito nada sobre ti. ¡Dale tu toque
+                personal editando tu perfil!
+              </p>
+            </div>
+            <div class="info-section">
+              <h3>Especialidades</h3>
+              <div class="tags" id="professional-specialties">
+                <p>
+                  ¿En qué eres bueno? ¡Edita tu perfil y cuéntanos tus talentos!
+                </p>
+              </div>
+              <!-- <p>¿En qué eres bueno? ¡Edita tu perfil y cuéntanos tus talentos!</p> -->
+            </div>
+            <div class="info-section">
+              <h3>Experiencia</h3>
+              <div class="experienceContain">
+                <p id="professional-experience">8</p>
+                <span>año(s)</span>
+              </div>
+            </div>
+            <div class="info-section">
+              <h3>Educación</h3>
+              <div id="professional-education">
+                <div class="education-item">
+                  <p>
+                    Cuéntanos más sobre tu formación. Edita tu perfil y
+                    agrégala.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="portfolio-content">
+            <div class="portfolio-grid" id="portfolio-grid"></div>
+            <div id="upload-portfolio" class="upload-portfolio">
+              <label for="portfolio-input" class="upload-portfolio-btn">
+                <i class="fas fa-plus"></i>
+                <span>Agregar proyecto</span>
+              </label>
+              <input
+                type="file"
+                id="portfolio-input"
+                accept="image/*"
+                multiple
+                style="display: none"
+              />
+            </div>
+          </div>
+
+          <div class="tab-content" id="projectSave-content">
+            <div class="saved-projects-grid" id="saved-projects-grid">
+              <!-- Proyectos guardados se cargarán aquí dinámicamente -->
+            </div>
+          </div>
+
+          <div class="tab-content" id="organizar-content">
+            <!-- Contenido principal del organizador -->
+            <div class="organizer-container">
+              <header class="organizer-header">
+                <h1>Organizador de Tareas</h1>
+                <ul class="tabsIntra">
+                  <li>
+                    <a href="#" class="tabIntra activeIntra" data-tab="notas"
+                      >Notas</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#" class="tabIntra" data-tab="agenda">Agenda</a>
+                  </li>
+                  <li>
+                    <a href="#" class="tabIntra" data-tab="calendario"
+                      >Calendario</a
+                    >
+                  </li>
+                </ul>
+              </header>
+
+              <main class="organizer-main">
+                <!-- Tab de Notas -->
+                <div class="tab-panel active" id="notas-panel">
+                  <div class="panel">
+                    <div class="panel-header">
+                      <h2>Mis Notas</h2>
+                      <button id="nueva-nota" class="btn btn-primary">
+                        Nueva Nota
+                      </button>
+                    </div>
+                    <div class="panel-body">
+                      <div id="lista-notas" class="notas-grid"></div>
+                    </div>
+                  </div>
+
+                  <!-- Modal para crear/editar notas -->
+                  <div id="modal-nota" class="modal">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h2 id="modal-titulo">Nueva Nota</h2>
+                        <span class="close-modal">&times;</span>
+                      </div>
+                      <div class="modal-body">
+                        <form id="form-nota" class="modal-form">
+                          <input type="hidden" id="id-nota" />
+
+                          <div class="form-group">
+                            <label for="titulo-nota">Título</label>
+                            <input
+                              type="text"
+                              id="titulo-nota"
+                              required
+                              placeholder="Título de la nota"
+                            />
+                          </div>
+
+                          <div class="form-group">
+                            <label for="contenido-nota">Contenido</label>
+                            <textarea
+                              id="contenido-nota"
+                              placeholder="Escribe aquí el contenido de tu nota..."
+                            ></textarea>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="tags-nota"
+                              >Etiquetas (separadas por comas)</label
+                            >
+                            <input
+                              type="text"
+                              id="tags-nota"
+                              placeholder="trabajo, personal, importante"
+                            />
+                          </div>
+
+                          <div class="form-group">
+                            <label for="color-nota">Color</label>
+                            <select id="color-nota">
+                              <option value="yellow">Amarillo</option>
+                              <option value="green">Verde</option>
+                              <option value="blue">Azul</option>
+                              <option value="red">Rojo</option>
+                              <option value="purple">Morado</option>
+                            </select>
+
+                            <div class="color-selector">
+                              <div
+                                class="color-option yellow"
+                                data-color="yellow"
+                              ></div>
+                              <div
+                                class="color-option green"
+                                data-color="green"
+                              ></div>
+                              <div
+                                class="color-option blue"
+                                data-color="blue"
+                              ></div>
+                              <div
+                                class="color-option red"
+                                data-color="red"
+                              ></div>
+                              <div
+                                class="color-option purple"
+                                data-color="purple"
+                              ></div>
+                            </div>
+                          </div>
+
+                          <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                              Guardar
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tab de Agenda -->
+                <div class="tab-panel" id="agenda-panel">
+                  <div class="panel">
+                    <div class="panel-header">
+                      <h2>Mi Agenda</h2>
+                      <button id="nuevo-evento" class="btn btn-primary">
+                        Nuevo Evento
+                      </button>
+                    </div>
+                    <div class="panel-body">
+                      <div class="filtros-agenda">
+                        <label for="filtro-fecha-agenda"
+                          >Filtrar por fecha:</label
+                        >
+                        <input type="date" id="filtro-fecha-agenda" />
+                        <button id="btn-filtrar-agenda" class="btn btn-small">
+                          Filtrar
+                        </button>
+                        <button
+                          id="btn-limpiar-filtro-agenda"
+                          class="btn btn-small"
+                        >
+                          Limpiar
+                        </button>
+                      </div>
+                      <div id="lista-eventos" class="lista-eventos"></div>
+                    </div>
+                  </div>
+
+                  <!-- Modal para crear/editar eventos -->
+                  <div id="modal-evento" class="modal">
+                    <div class="modal-content">
+                      <span class="close-modal">&times;</span>
+                      <h3 id="modal-titulo-evento">Nuevo Evento</h3>
+                      <form id="form-evento">
+                        <div class="form-group">
+                          <label for="titulo-evento">Título</label>
+                          <input type="text" id="titulo-evento" required />
+                        </div>
+                        <div class="form-group">
+                          <label for="descripcion-evento">Descripción</label>
+                          <textarea id="descripcion-evento" rows="4"></textarea>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group">
+                            <label for="fecha-evento">Fecha</label>
+                            <input type="date" id="fecha-evento" required />
+                          </div>
+                          <div class="form-group">
+                            <label for="hora-evento">Hora</label>
+                            <input type="time" id="hora-evento" required />
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="prioridad-evento">Prioridad</label>
+                          <select id="prioridad-evento">
+                            <option value="baja">Baja</option>
+                            <option value="media">Media</option>
+                            <option value="alta">Alta</option>
+                          </select>
+                        </div>
+                        <input type="hidden" id="id-evento" />
+                        <button type="submit" class="btn btn-success">
+                          Guardar
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tab de Calendario -->
+                <div class="tab-panel" id="calendario-panel">
+                  <h2>Mi Calendario</h2>
+                  <div class="panel">
+                    <div class="panel-header">
+                      <div class="calendario-nav">
+                        <button id="prev-month" class="btn btn-small">
+                          &lt;
+                        </button>
+                        <h3 id="current-month-year">Abril 2025</h3>
+                        <button id="next-month" class="btn btn-small">
+                          &gt;
+                        </button>
+                      </div>
+                    </div>
+                    <div class="panel-body">
+                      <div class="calendario">
+                        <div class="dias-semana">
+                          <div>Dom</div>
+                          <div>Lun</div>
+                          <div>Mar</div>
+                          <div>Mié</div>
+                          <div>Jue</div>
+                          <div>Vie</div>
+                          <div>Sáb</div>
+                        </div>
+                        <div id="calendario-dias" class="dias-grid"></div>
+                      </div>
+                      <div id="eventos-dia" class="eventos-dia">
+                        <h4>Eventos: <span id="fecha-seleccionada"></span></h4>
+                        <div id="lista-eventos-dia"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
+          <div class="tab-content" id="folios-content">
+            <div class="main-container">
+              <h1 class="section-title">Biblioteca de Documentos</h1>
+
+              <!-- Sección de filtros -->
+              <div class="filter-section">
+                <h2 class="filter-title">Filtros de búsqueda</h2>
+
+                <div class="filter-controls">
+                  <div class="filter-group">
+                    <label for="partido" class="filter-label">Partido</label>
+                    <select id="partido" class="filter-select">
+                      <option value="">Todos los partidos</option>
+                      <!-- Se cargarán dinámicamente desde Firebase -->
+                    </select>
+                  </div>
+
+                  <div class="filter-group">
+                    <label for="tipo" class="filter-label"
+                      >Tipo de Documento</label
+                    >
+                    <select id="tipo" class="filter-select">
+                      <option value="">Todos los tipos</option>
+                      <option value="codigos">Códigos de Edificación</option>
+                      <option value="zonificacion">
+                        Reglamentos de Zonificación / Urbanísticos
+                      </option>
+                      <option value="especificos">
+                        Reglamentos Técnicos Específicos
+                      </option>
+                      <option value="iram">Normas IRAM</option>
+                      <option value="s&h">Planes de Seguridad e Higiene</option>
+                      <option value="trabajoObra">
+                        Protocolos de trabajo en obra
+                      </option>
+                      <option value="buenasPracticas">
+                        Manual de buenas prácticas
+                      </option>
+                      <option value="otro">Otro</option>
+                    </select>
+                  </div>
+
+                  <!-- <div class="filter-group">
+                    <label for="fecha-desde" class="filter-label">Desde</label>
+                    <input type="date" id="fecha-desde" class="filter-date" />
+                  </div>
+
+                  <div class="filter-group">
+                    <label for="fecha-hasta" class="filter-label">Hasta</label>
+                    <input type="date" id="fecha-hasta" class="filter-date" />
+                  </div> -->
+                </div>
+
+                <div class="search-container">
+                  <input
+                    type="text"
+                    id="search-input"
+                    class="search-input"
+                    placeholder="Buscar por título, contenido o palabras clave..."
+                  />
+                  <button id="search-btn" class="btn-folios btn-primary-folios">
+                    Buscar
+                  </button>
+                  <button
+                    id="reset-btn"
+                    class="btn-folios btn-secondary-folios"
+                  >
+                    Restablecer filtros
+                  </button>
+                </div>
+              </div>
+
+              <!-- Resultados y visualización de documentos -->
+              <div class="result-section">
+                <div class="result-header">
+                  <h2 class="result-title">
+                    Documentos (<span id="doc-count">0</span>)
+                  </h2>
+                  <div class="result-view-options">
+                    <button
+                      id="view-grid"
+                      class="view-btn active"
+                      title="Vista en cuadrícula"
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                      </svg>
+                    </button>
+                    <button
+                      id="view-list"
+                      class="view-btn"
+                      title="Vista en lista"
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div id="loading-indicator" class="loading-indicator">
+                  <div class="spinner"></div>
+                  <p>Cargando documentos...</p>
+                </div>
+
+                <div id="documents-grid" class="documents-grid">
+                  <!-- Los documentos se cargarán aquí dinámicamente -->
+                </div>
+
+                <div id="no-results" class="no-results hidden">
+                  <svg
+                    width="64"
+                    height="64"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                  <p>
+                    No se encontraron documentos que coincidan con los filtros
+                    seleccionados.
+                  </p>
+                  <button
+                    id="clear-filters"
+                    class="btn-folios btn-secondary-folios"
+                  >
+                    Limpiar filtros
+                  </button>
+                </div>
+
+                <div class="pagination">
+                  <button id="load-more" class="btn-folios btn-outline-folios">
+                    Cargar más documentos
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Template para los documentos -->
+            <template id="document-template">
+              <div class="document-card">
+                <div class="document-icon">
+                  <svg
+                    width="40"
+                    height="40"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                    ></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                </div>
+                <div class="document-content">
+                  <h3 class="document-title"></h3>
+                  <div class="document-meta">
+                    <span class="document-partido"></span>
+                    <span class="document-type"></span>
+                    <span class="document-date"></span>
+                  </div>
+                  <p class="document-description"></p>
+                </div>
+                <div class="document-actions">
+                  <button class="btn-folios btn-view-folios" title="Visualizar">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                      ></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  </button>
+                  <button
+                    class="btn-folios btn-download-folios"
+                    title="Descargar"
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                      ></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </template>
+
+            <!-- Modal para visualización de PDF -->
+            <div id="pdf-modal" class="modal-folios">
+              <div class="modal-content-folios">
+                <div class="modal-header-folios">
+                  <h2 id="modal-title">Título del documento</h2>
+                  <button id="close-modal-folios" class="close-btn-folios">
+                    &times;
+                  </button>
+                </div>
+                <div class="modal-body-folios">
+                  <div id="pdf-container"></div>
+                </div>
+                <div class="modal-footer-folios">
+                  <button
+                    id="modal-download"
+                    class="btn-folios btn-primary-folios"
+                  >
+                    Descargar PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-content" id="computos-content">
+            <main class="taxs-container">
+              <div class="taxs-header">
+                <h1>Mis Cómputos</h1>
+                <div class="taxs-actions">
+                  <div class="taxs-filter">
+                    <select id="statusFilter" class="form-select">
+                      <option value="all">Todos</option>
+                      <option value="draft">Borradores</option>
+                      <option value="completed">Completos</option>
+                    </select>
+                  </div>
+                  <div class="taxs-search">
+                    <input
+                      type="text"
+                      id="searchInput"
+                      placeholder="Buscar cómputos..."
+                      class="form-control"
+                    />
+                    <i class="fas fa-search"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="taxs-list">
+                <div class="taxs-list-header">
+                  <span class="taxs-name">Nombre del Cliente</span>
+                  <span class="taxs-project">Proyecto</span>
+                  <span class="taxs-date">Fecha</span>
+                  <span class="taxs-status">Estado</span>
+                  <span class="taxs-actions">Acciones</span>
+                </div>
+                <div id="taxsContainer" class="taxs-items">
+                  <!-- Los cómputos se cargarán aquí dinámicamente -->
+                  <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Cargando cómputos...</p>
+                  </div>
+                </div>
+              </div>
+              <!-- Paginación -->
+              <div class="taxs-pagination">
+                <button id="prevPage" class="btn btn-outline" disabled>
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+                <span id="pageInfo">Página 1 de 1</span>
+                <button id="nextPage" class="btn btn-outline">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </main>
+            <!-- Modal para confirmación de eliminación -->
+            <div id="deleteModal" class="modal-computo">
+              <div class="modal-content-computo">
+                <span class="close-modal-computo">&times;</span>
+                <h2>Confirmar Eliminación</h2>
+                <p>
+                  ¿Estás seguro de que deseas eliminar este cómputo? Esta acción
+                  no se puede deshacer.
+                </p>
+                <div class="modal-actions-computo">
+                  <button id="cancelDelete" class="btn btn-primary">
+                    Cancelar
+                  </button>
+                  <button id="confirmDelete" class="btn btn-danger">
+                    <i class="fas fa-trash"></i>
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3>VivArq</h3>
+          <p>
+            Conectando profesionales de la construcción con Clientes en
+            Argentina.
+          </p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h4>Enlaces</h4>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="allProfessionals.html">Profesionales</a></li>
+            <li><a href="allProjects.html">Proyectos</a></li>
+            <li><a href="contactUs.html">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="faq.html">Preguntas Frecuentes</a></li>
+            <li><a href="terms&conditions.html">Términos y Condiciones</a></li>
+            <li><a href="#privacidad">Política de Privacidad</a></li>
+            <li><a href="#ayuda">Ayuda</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contacto</h4>
+          <ul class="contact-info">
+            <li>
+              <i class="fas fa-map-marker-alt"></i> Buenos Aires, Argentina
+            </li>
+            <li><i class="fas fa-phone"></i> +54 11 1234-5678</li>
+            <li><i class="fas fa-envelope"></i> info@vivarq.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 VivArq. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        const menuToggle = document.getElementById("menuToggle");
+        const navMenu = document.querySelector(".navbar nav");
+        const userMenu = document.getElementById("userMenu");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const authButtons = document.getElementById("authButtons");
+
+        // Aplicar siempre el estilo con fondo
+        navbar.classList.add("solidFlex");
+
+        // Mostrar/ocultar el menú de navegación en móvil
+        menuToggle.addEventListener("click", function () {
+          navMenu.classList.toggle("active");
+        });
+
+        // Cerrar el menú de navegación al hacer clic fuera
+        document.addEventListener("click", function (event) {
+          if (
+            !navMenu.contains(event.target) &&
+            !menuToggle.contains(event.target) &&
+            navMenu.classList.contains("active")
+          ) {
+            navMenu.classList.remove("active");
+          }
+        });
+        if (userMenu) {
+          userMenu.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle("active");
+          });
+
+          // Cerrar el menú de usuario al hacer clic fuera
+          document.addEventListener("click", function (event) {
+            if (
+              !dropdownMenu.contains(event.target) &&
+              dropdownMenu.classList.contains("active")
+            ) {
+              dropdownMenu.classList.remove("active");
+            }
+          });
+        }
+      });
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"
+    />
+  </body>
+</html>

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VivArq - Publicar Proyecto</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/project-form.css" />
+    <script type="module" src="js/firebase-config.js" defer></script>
+    <script type="module" src="js/home.js" defer></script>
+    <link rel="shortcut icon" href="images/Logo.png" type="image/x-icon" />
+    <script type="module" src="js/edit-project.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <script src="js/loadPages.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo" id="logo">
+        <a style="cursor: pointer" class="homeBtn"><h1>VivArq</h1></a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="allProjects.html">Proyectos</a></li>
+          <li><a href="allProfessionals.html">Profesionales</a></li>
+          <li><a href="contactUs.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div>
+        <div class="auth-buttons" id="authButtons">
+          <a href="login.html" class="btn btn-login">Acceder</a>
+        </div>
+        <div class="user-menu" id="userMenu">
+          <!-- Nuevo indicador de notificaciones al lado del menú de usuario -->
+          <div class="notification-indicator" id="userMenuNotification">0</div>
+            <div class="profile-icon">
+              <img id="userAvatar" src="" alt="Avatar" style="display: none" />
+              <i id="defaultIcon" class="fas fa-user"></i>
+            </div>
+          <div class="user-info">
+            <p class="user-name" id="userName">Irwin Williams</p>
+            <p class="accountTypeProfile" id="accountTypeProfile">
+              Personal account
+            </p>
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="chat.html" class="menu-item" id="messagesLink">
+              <i class="fas fa-envelope"></i>Mensajes
+              <span class="count">0</span>
+            </a>
+            <a href="#" class="menu-item" id="accountLink">
+              <i class="fas fa-user"></i>Mi Cuenta
+            </a>
+            <a href="#" class="menu-item" id="settingsLink">
+              <i class="fas fa-cog"></i>Configuración
+            </a>
+            <a href="#" class="menu-item" id="faqLink">
+              <i class="fa-solid fa-circle-question"></i>FAQ
+            </a>
+            <a href="#" class="menu-item logout" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hiddenMenuToggle">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="form-container">
+          <h1>Publicar Nuevo Proyecto</h1>
+          <div class="form-progress">
+            <div class="progress-steps">
+              <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <span>Información Básica</span>
+              </div>
+              <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <span>Detalles Técnicos</span>
+              </div>
+              <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <span>Presupuesto y Plazos</span>
+              </div>
+              <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <span>Imágenes y Recursos</span>
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress" style="width: 25%"></div>
+            </div>
+          </div>
+
+          <form id="project-form">
+            <!-- Paso 1: Información Básica -->
+            <div class="form-step active" id="step-1">
+              <div class="form-group">
+                <label for="title"
+                  >Título del Proyecto <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  required
+                  placeholder="Ej: Renovación de cocina en casa familiar"
+                />
+              </div>
+              <div class="form-group">
+                <label for="description"
+                  >Descripción del Proyecto
+                  <span class="required">*</span></label
+                >
+                <textarea
+                  id="description"
+                  name="description"
+                  rows="5"
+                  required
+                  placeholder="Describe detalladamente qué necesitas para tu proyecto"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="category"
+                  >Categoría <span class="required">*</span></label
+                >
+                <select id="category" name="category" required>
+                  <option value="" selected disabled>
+                    Seleccionar categoría
+                  </option>
+                  <option value="Construcción">Construcción</option>
+                  <option value="Renovación">Renovación</option>
+                  <option value="Diseño">Diseño de Interiores</option>
+                  <option value="Instalaciones">Instalaciones</option>
+                  <option value="Mantenimiento">Mantenimiento</option>
+                  <option value="Paisajismo">Paisajismo</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="location"
+                  >Ubicación <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  required
+                  placeholder="Ej: San Miguel de Tucumán, Tucumán"
+                />
+              </div>
+              <div class="form-buttons">
+                <button type="button" class="secondary-btn" id="btn-later">
+                  Guardar y Continuar Después
+                </button>
+                <button type="button" class="primary-btn" id="btn-step-1">
+                  Siguiente
+                </button>
+              </div>
+            </div>
+
+            <!-- Paso 2: Detalles Técnicos -->
+            <div class="form-step" id="step-2">
+              <div class="form-group">
+                <label for="property-type"
+                  >Tipo de Propiedad <span class="required">*</span></label
+                >
+                <select id="property-type" name="propertyType" required>
+                  <option value="" selected disabled>Seleccionar tipo</option>
+                  <option value="Casa">Casa</option>
+                  <option value="Departamento">Departamento</option>
+                  <option value="Oficina">Oficina</option>
+                  <option value="Local Comercial">Local Comercial</option>
+                  <option value="Terreno">Terreno</option>
+                  <option value="Otro">Otro</option>
+                </select>
+                <div
+                  id="custom-property-type-container"
+                  class="mt-2"
+                  style="display: none"
+                >
+                  <label for="property-type"
+                    >Especifica la Propiedad
+                    <span class="required">*</span></label
+                  >
+                  <input
+                    type="text"
+                    id="custom-property-type"
+                    name="customPropertyType"
+                    placeholder="Especifique el tipo de propiedad"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="area">Superficie Aproximada (m²)</label>
+                <input
+                  type="number"
+                  id="area"
+                  name="area"
+                  placeholder="Ej: 120"
+                />
+              </div>
+              <div class="form-group">
+                <label>Requerimientos Especiales</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="requirements"
+                      value="Requiere permisos municipales"
+                    />
+                    Requiere permisos municipales
+                  </label>
+                  <label class="checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="requirements"
+                      value="Necesita planos/diseños"
+                    />
+                    Necesita planos/diseños
+                  </label>
+                  <label class="checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="requirements"
+                      value="Incluye materiales"
+                    />
+                    Incluye materiales
+                  </label>
+                  <label class="checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="requirements"
+                      value="Requiere equipamiento especial"
+                    />
+                    Requiere equipamiento especial
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="technical-details"
+                  >Detalles Técnicos Adicionales</label
+                >
+                <textarea
+                  id="technical-details"
+                  name="technicalDetails"
+                  rows="4"
+                  placeholder="Proporciona especificaciones técnicas que sean relevantes"
+                ></textarea>
+              </div>
+              <div class="form-buttons">
+                <button type="button" class="secondary-btn" id="btn-back-1">
+                  Anterior
+                </button>
+                <button type="button" class="primary-btn" id="btn-step-2">
+                  Siguiente
+                </button>
+              </div>
+            </div>
+
+            <!-- Paso 3: Presupuesto y Plazos -->
+            <div class="form-step" id="step-3">
+              <div class="form-group">
+                <label for="budget-range"
+                  >Rango de Presupuesto <span class="required">*</span></label
+                >
+                <select id="budget-range" name="budgetRange" required>
+                  <option value="" selected disabled>Seleccionar rango</option>
+                  <option value="Bajo">Menos de $500.000</option>
+                  <option value="Medio bajo">$500.000 - $1.000.000</option>
+                  <option value="Medio">$1.000.000 - $3.000.000</option>
+                  <option value="Medio alto">$3.000.000 - $5.000.000</option>
+                  <option value="Alto">Más de $5.000.000</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="budget">Presupuesto Específico (ARS)</label>
+                <input
+                  type="text"
+                  id="budget"
+                  name="budget"
+                  placeholder="Ej: 2.500.000"
+                />
+              </div>
+              <div class="form-group">
+                <label for="timeframe"
+                  >Plazo Estimado <span class="required">*</span></label
+                >
+                <select id="timeframe" name="timeframe" required>
+                  <option value="" selected disabled>Seleccionar plazo</option>
+                  <option value="Urgente (menos de 1 semana)">
+                    Urgente (menos de 1 semana)
+                  </option>
+                  <option value="Corto (1-2 semanas)">
+                    Corto (1-2 semanas)
+                  </option>
+                  <option value="Medio (1-2 meses)">Medio (1-2 meses)</option>
+                  <option value="Largo (3-6 meses)">Largo (3-6 meses)</option>
+                  <option value="Muy largo (más de 6 meses)">
+                    Muy largo (más de 6 meses)
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="start-date">Fecha de Inicio Preferida</label>
+                <input type="date" id="start-date" name="startDate" />
+              </div>
+              <div class="form-group">
+                <label for="payment-terms"
+                  >Términos de Pago <span class="required">*</span></label
+                >
+                <select id="payment-terms" name="paymentTerms" required>
+                  <option value="" selected disabled>
+                    Seleccionar términos
+                  </option>
+                  <option value="Pago por adelantado">
+                    Pago por adelantado
+                  </option>
+                  <option value="Pago por hitos">Pago por hitos</option>
+                  <option value="Pago al finalizar">Pago al finalizar</option>
+                  <option value="Negociable">Negociable</option>
+                </select>
+              </div>
+              <div class="form-buttons">
+                <button type="button" class="secondary-btn" id="btn-back-2">
+                  Anterior
+                </button>
+                <button type="button" class="primary-btn" id="btn-step-3">
+                  Siguiente
+                </button>
+              </div>
+            </div>
+
+            <!-- Paso 4: Imágenes y Recursos -->
+            <div class="form-step" id="step-4">
+              <div class="form-group">
+                <label for="project-images">Imágenes del Proyecto</label>
+                <div class="file-upload-container">
+                  <div class="upload-area" id="upload-area">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>
+                      Arrastra y suelta imágenes aquí o
+                      <span id="browse-files">examina archivos</span>
+                    </p>
+                    <p class="small">
+                      Formatos: JPG, PNG o PDF (Máx. 5MB por archivo)
+                    </p>
+                  </div>
+                  <input
+                    type="file"
+                    id="project-images"
+                    name="projectImages"
+                    multiple
+                    accept="image/jpeg,image/png,application/pdf"
+                    style="display: none"
+                  />
+                </div>
+                <div class="uploaded-files" id="uploaded-files">
+                  <!-- Archivos subidos se mostrarán aquí -->
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="reference-url">Enlaces de Referencia</label>
+                <input
+                  type="url"
+                  id="reference-url"
+                  name="referenceUrl"
+                  placeholder="Ej: https://pinterest.com/mi-inspiracion"
+                />
+                <button type="button" class="secondary-btn sm-btn" id="add-url">
+                  + Agregar
+                </button>
+                <div class="reference-urls" id="reference-urls">
+                  <!-- URLs de referencia se agregarán aquí -->
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="visibility">Visibilidad del Proyecto</label>
+                <div class="radio-options">
+                  <label class="radio-label">
+                    <input
+                      type="radio"
+                      name="visibility"
+                      value="public"
+                      checked
+                    />
+                    Público (visible para todos los profesionales)
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="visibility" value="private" />
+                    Privado (solo para profesionales invitados)
+                  </label>
+                </div>
+              </div>
+              <div class="form-buttons">
+                <button type="button" class="secondary-btn" id="btn-back-3">
+                  Anterior
+                </button>
+                <button type="submit" class="primary-btn" id="btn-update">
+                  Actualizar Proyecto
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3>VivArq</h3>
+          <p>
+            Conectando profesionales de la construcción con Clientes en
+            Argentina.
+          </p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h4>Enlaces</h4>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="allProfessionals.html">Profesionales</a></li>
+            <li><a href="allProjects.html">Proyectos</a></li>
+            <li><a href="contactUs.html">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="faq.html">Preguntas Frecuentes</a></li>
+            <li><a href="terms&conditions.html">Términos y Condiciones</a></li>
+            <li><a href="#privacidad">Política de Privacidad</a></li>
+            <li><a href="#ayuda">Ayuda</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contacto</h4>
+          <ul class="contact-info">
+            <li>
+              <i class="fas fa-map-marker-alt"></i> Buenos Aires, Argentina
+            </li>
+            <li><i class="fas fa-phone"></i> +54 11 1234-5678</li>
+            <li><i class="fas fa-envelope"></i> info@vivarq.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 VivArq. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        const menuToggle = document.getElementById("menuToggle");
+        const navMenu = document.querySelector(".navbar nav");
+        const userMenu = document.getElementById("userMenu");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const authButtons = document.getElementById("authButtons");
+
+        // Aplicar siempre el estilo con fondo
+        navbar.classList.add("solidFlex");
+
+        // Mostrar/ocultar el menú de navegación en móvil
+        menuToggle.addEventListener("click", function () {
+          navMenu.classList.toggle("active");
+        });
+
+        // Cerrar el menú de navegación al hacer clic fuera
+        document.addEventListener("click", function (event) {
+          if (
+            !navMenu.contains(event.target) &&
+            !menuToggle.contains(event.target) &&
+            navMenu.classList.contains("active")
+          ) {
+            navMenu.classList.remove("active");
+          }
+        });
+        if (userMenu) {
+          userMenu.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle("active");
+          });
+
+          // Cerrar el menú de usuario al hacer clic fuera
+          document.addEventListener("click", function (event) {
+            if (
+              !dropdownMenu.contains(event.target) &&
+              dropdownMenu.classList.contains("active")
+            ) {
+              dropdownMenu.classList.remove("active");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Preguntas Frecuentes - FAQ</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <script type="module" src="js/firebase-config.js" defer></script>
+    <script type="module" src="js/home.js" defer></script>
+    <script type="module" src="js/faq.js" defer></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/faq.css" />
+    <link rel="shortcut icon" href="images/Logo.png" type="image/x-icon" />
+    <script src="js/loadPages.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo" id="logo">
+        <a style="cursor: pointer" class="homeBtn"><h1>VivArq</h1></a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="allProjects.html">Proyectos</a></li>
+          <li><a href="allProfessionals.html">Profesionales</a></li>
+          <li><a href="contactUs.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div>
+        <div class="auth-buttons" id="authButtons">
+          <a href="login.html" class="btn btn-login">Acceder</a>
+        </div>
+        <div class="user-menu" id="userMenu">
+          <!-- Nuevo indicador de notificaciones al lado del menú de usuario -->
+          <div class="notification-indicator" id="userMenuNotification">0</div>
+            <div class="profile-icon">
+              <img id="userAvatar" src="" alt="Avatar" style="display: none" />
+              <i id="defaultIcon" class="fas fa-user"></i>
+            </div>
+          <div class="user-info">
+            <p class="user-name" id="userName">Irwin Williams</p>
+            <p class="accountTypeProfile" id="accountTypeProfile">
+              Personal account
+            </p>
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="chat.html" class="menu-item" id="messagesLink">
+              <i class="fas fa-envelope"></i>Mensajes
+              <span class="count">0</span>
+            </a>
+            <a href="#" class="menu-item" id="accountLink">
+              <i class="fas fa-user"></i>Mi Cuenta
+            </a>
+            <a href="#" class="menu-item" id="settingsLink">
+              <i class="fas fa-cog"></i>Configuración
+            </a>
+            <a href="#" class="menu-item" id="faqLink">
+              <i class="fa-solid fa-circle-question"></i>FAQ
+            </a>
+            <a href="#" class="menu-item logout" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hiddenMenuToggle">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Contenido principal FAQ -->
+    <section class="faq-section">
+      <div class="container">
+        <h2>Preguntas Frecuentes</h2>
+        <p class="faq-intro">
+          Encuentra respuestas a las preguntas más comunes sobre nuestros
+          servicios y cómo podemos ayudarte.
+        </p>
+
+        <div class="faq-search">
+          <input type="text" id="faqSearch" placeholder="Buscar preguntas..." />
+          <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="faq-categories">
+          <button class="category-btn active" data-category="all">Todas</button>
+          <button class="category-btn" data-category="general">General</button>
+          <button class="category-btn" data-category="cuenta">Cuenta</button>
+          <button class="category-btn" data-category="pagos">Pagos</button>
+          <button class="category-btn" data-category="servicios">
+            Servicios
+          </button>
+        </div>
+
+        <div class="faq-container">
+          <!-- Categoría: General -->
+          <div class="faq-item" data-category="general">
+            <div class="faq-question">
+              <h3>¿Qué es MiEmpresa?</h3>
+              <div class="faq-icon">
+                <i class="fas fa-chevron-down"></i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>
+                MiEmpresa es una plataforma integral que ofrece soluciones
+                digitales para pequeñas y medianas empresas. Nuestro objetivo es
+                ayudar a las empresas a crecer y optimizar sus operaciones
+                mediante herramientas tecnológicas accesibles y fáciles de usar.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item" data-category="general">
+            <div class="faq-question">
+              <h3>
+                ¿Cómo puedo contactar con el servicio de atención al cliente?
+              </h3>
+              <div class="faq-icon">
+                <i class="fas fa-chevron-down"></i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>
+                Puedes contactar con nuestro equipo de atención al cliente de
+                varias formas:
+              </p>
+              <ul>
+                <li>Por teléfono: 900 123 456 (L-V, 9:00-18:00)</li>
+                <li>Por email: ayuda@miempresa.com</li>
+                <li>A través del chat en vivo disponible en nuestra web</li>
+                <li>
+                  Mediante el formulario de contacto en la sección "Contacto"
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Categoría: Cuenta -->
+          <div class="faq-item" data-category="cuenta">
+            <div class="faq-question">
+              <h3>¿Cómo puedo crear una cuenta?</h3>
+              <div class="faq-icon">
+                <i class="fas fa-chevron-down"></i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>Crear una cuenta es muy sencillo:</p>
+              <ol>
+                <li>
+                  Haz clic en el botón "Registrarse" en la parte superior de la
+                  página
+                </li>
+                <li>
+                  Completa el formulario con tus datos personales y de empresa
+                </li>
+                <li>
+                  Verifica tu correo electrónico a través del enlace que te
+                  enviaremos
+                </li>
+                <li>¡Listo! Ya puedes acceder a todos nuestros servicios</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="faq-item" data-category="cuenta">
+            <div class="faq-question">
+              <h3>¿Cómo puedo recuperar mi contraseña?</h3>
+              <div class="faq-icon">
+                <i class="fas fa-chevron-down"></i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>Si has olvidado tu contraseña, sigue estos pasos:</p>
+              <ol>
+                <li>Haz clic en "Iniciar Sesión"</li>
+                <li>Selecciona la opción "¿Olvidaste tu contraseña?"</li>
+                <li>Introduce tu correo electrónico</li>
+                <li>Recibirás un enlace para restablecer tu contraseña</li>
+                <li>
+                  Sigue las instrucciones del correo para crear una nueva
+                  contraseña
+                </li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- Categoría: Pagos -->
+          <div class="faq-item" data-category="pagos">
+            <div class="faq-question">
+              <h3>¿Qué métodos de pago aceptan?</h3>
+              <div class="faq-icon">
+                <i class="fas fa-chevron-down"></i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>Aceptamos diversos métodos de pago para tu comodidad:</p>
+              <ul>
+                <li>
+                  Tarjetas de crédito y débito (Visa, Mastercard, American
+                  Express)
+                </li>
+                <li>PayPal</li>
+                <li>Transferencia bancaria</li>
+                <li>Domiciliación bancaria (para suscripciones mensuales)</li>
+              </ul>
+              <p>
+                Todos nuestros métodos de pago son seguros y cumplen con los
+                estándares de seguridad actuales.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item" data-category="pagos">
+            <div class="faq-question">
+              <h3>¿Ofrecen facturación mensual o anual?</h3>
+              <div class="faq-icon">
+                <i class="fas fa-chevron-down"></i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>
+                Ofrecemos ambas opciones de facturación. Con la facturación
+                anual, disfrutarás de un descuento del 20% respecto al precio
+                mensual. Puedes elegir tu preferencia durante el proceso de
+                suscripción o cambiarla más tarde desde el panel de
+                configuración de tu cuenta.
+              </p>
+            </div>
+          </div>
+
+          <!-- Categoría: Servicios -->
+          <div class="faq-item" data-category="servicios">
+            <div class="faq-question">
+              <h3>¿Qué servicios ofrecen?</h3>
+              <div class="faq-icon">
+                <i class="fas fa-chevron-down"></i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>Nuestros principales servicios incluyen:</p>
+              <ul>
+                <li>
+                  <strong>Gestión de proyectos:</strong> Herramientas para
+                  planificar, ejecutar y dar seguimiento a tus proyectos.
+                </li>
+                <li>
+                  <strong>CRM:</strong> Sistema para gestionar las relaciones
+                  con tus clientes.
+                </li>
+                <li>
+                  <strong>Facturación:</strong> Emisión y gestión de facturas,
+                  presupuestos y recibos.
+                </li>
+                <li>
+                  <strong>Marketing digital:</strong> Herramientas para campañas
+                  de email, redes sociales y análisis.
+                </li>
+                <li>
+                  <strong>Soporte técnico:</strong> Asistencia personalizada
+                  para resolver cualquier duda o problema.
+                </li>
+              </ul>
+              <p>
+                Puedes consultar más detalles en nuestra sección de "Servicios".
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item" data-category="servicios">
+            <div class="faq-question">
+              <h3>¿Ofrecen período de prueba?</h3>
+              <div class="faq-icon">
+                <i class="fas fa-chevron-down"></i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>
+                Sí, ofrecemos un período de prueba gratuito de 14 días para que
+                puedas explorar todas las funcionalidades de nuestra plataforma.
+                Durante este período, tendrás acceso completo a todas las
+                herramientas sin compromiso. No se requiere tarjeta de crédito
+                para iniciar el período de prueba.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item" data-category="servicios">
+            <div class="faq-question">
+              <h3>¿Puedo cancelar mi suscripción en cualquier momento?</h3>
+              <div class="faq-icon">
+                <i class="fas fa-chevron-down"></i>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>
+                Sí, puedes cancelar tu suscripción en cualquier momento desde el
+                panel de configuración de tu cuenta. No hay penalizaciones por
+                cancelación anticipada. Si cancelas durante un período de
+                facturación, podrás seguir utilizando el servicio hasta el final
+                del período pagado.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-not-found" style="display: none">
+          <div class="not-found-content">
+            <i class="fas fa-search fa-3x"></i>
+            <h3>No se encontraron resultados</h3>
+            <p>
+              Intenta con otros términos o
+              <a href="contacto.html">contáctanos</a> directamente.
+            </p>
+          </div>
+        </div>
+
+        <div class="contact-cta">
+          <h3>¿No encuentras la respuesta que buscas?</h3>
+          <p>
+            Nuestro equipo de soporte está listo para ayudarte con cualquier
+            duda adicional que puedas tener.
+          </p>
+          <button class="btn btn-primary" id="contactUs">
+            Contactar con Soporte
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3>VivArq</h3>
+          <p>
+            Conectando profesionales de la construcción con Clientes en
+            Argentina.
+          </p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h4>Enlaces</h4>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="allProfessionals.html">Profesionales</a></li>
+            <li><a href="allProjects.html">Proyectos</a></li>
+            <li><a href="contactUs.html">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="faq.html">Preguntas Frecuentes</a></li>
+            <li><a href="terms&conditions.html">Términos y Condiciones</a></li>
+            <li><a href="#privacidad">Política de Privacidad</a></li>
+            <li><a href="#ayuda">Ayuda</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contacto</h4>
+          <ul class="contact-info">
+            <li>
+              <i class="fas fa-map-marker-alt"></i> Buenos Aires, Argentina
+            </li>
+            <!-- <li><i class="fas fa-phone"></i> +54 11 1234-5678</li> -->
+            <li id="openModalBtnEmail" style="cursor: pointer">
+              <i class="fas fa-envelope"></i><a> info@vivarq.com.ar</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 VivArq. Todos los derechos reservados.</p>
+        <span
+          ><p>
+            Creado por
+            <a href="https://www.instagram.com/nicocorera" target="_blank"
+              >Nicolás Corera</a
+            >
+          </p></span
+        >
+      </div>
+    </footer>
+    <div id="emailModal" class="modalEmail">
+      <div class="modal-contentEmail">
+        <span class="close-btnEmail">&times;</span>
+        <h2>Contacto por Email</h2>
+        <form
+          id="emailForm"
+          action="mailto:info@vivarq.com.ar"
+          method="POST"
+          enctype="text/plain"
+          class="formEmial"
+        >
+          <label class="labelEmail" for="subject">Asunto:</label>
+          <select id="subject" name="subject" class="subjectEmail">
+            <option value="Consulta General">Consulta General</option>
+            <option value="Soporte Técnico">Soporte Técnico</option>
+            <option value="Sugerencias">Sugerencias</option>
+          </select>
+          <button class="btnEmail" type="submit">
+            <i class="fa-solid fa-envelope"></i> Redactar Correo
+          </button>
+        </form>
+      </div>
+    </div>
+    <script>
+      // Abre el modal
+      const modal = document.getElementById("emailModal");
+      const openModalBtn = document.getElementById("openModalBtnEmail");
+      const closeBtn = document.getElementsByClassName("close-btnEmail")[0];
+
+      // Abre el modal cuando se hace clic en el botón
+      openModalBtn.onclick = function () {
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden";
+      };
+
+      // Cierra el modal cuando se hace clic en el botón de cierre
+
+      closeBtn.onclick = function () {
+        const modalContent = document.querySelector(".modal-contentEmail");
+        const closeAnimation = modalContent.animate(
+          [
+            { transform: "scale(1)", opacity: 1 },
+            { transform: "scale(0.9)", opacity: 0 },
+          ],
+          {
+            duration: 400,
+            easing: "ease-out",
+          }
+        );
+        closeAnimation.onfinish = function () {
+          modal.style.display = "none";
+          document.body.style.overflow = "auto";
+        };
+      };
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          const modalContent = document.querySelector(".modal-contentEmail");
+          const closeAnimation = modalContent.animate(
+            [
+              { transform: "scale(1)", opacity: 1 },
+              { transform: "scale(0.9)", opacity: 0 },
+            ],
+            {
+              duration: 400,
+              easing: "ease-out",
+            }
+          );
+          closeAnimation.onfinish = function () {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+          };
+        }
+      };
+
+      // Opcional: Si deseas que el formulario se envíe automáticamente al hacer clic en enviar:
+      const emailForm = document.getElementById("emailForm");
+      emailForm.onsubmit = function (event) {
+        event.preventDefault();
+        const subject = document.getElementById("subject").value;
+
+        // Abre el cliente de correo con el asunto y cuerpo seleccionados
+        window.location.href = `mailto:info@vivarq.com.ar?subject=${encodeURIComponent(
+          subject
+        )}`;
+        modal.style.display = "none"; // Cierra el modal después de enviar
+      };
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        const menuToggle = document.getElementById("menuToggle");
+        const navMenu = document.querySelector(".navbar nav");
+        const userMenu = document.getElementById("userMenu");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const authButtons = document.getElementById("authButtons");
+
+        // Aplicar siempre el estilo con fondo
+        navbar.classList.add("solidFlex");
+
+        // Mostrar/ocultar el menú de navegación en móvil
+        menuToggle.addEventListener("click", function () {
+          navMenu.classList.toggle("active");
+        });
+
+        // Cerrar el menú de navegación al hacer clic fuera
+        document.addEventListener("click", function (event) {
+          if (
+            !navMenu.contains(event.target) &&
+            !menuToggle.contains(event.target) &&
+            navMenu.classList.contains("active")
+          ) {
+            navMenu.classList.remove("active");
+          }
+        });
+        if (userMenu) {
+          userMenu.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle("active");
+          });
+
+          // Cerrar el menú de usuario al hacer clic fuera
+          document.addEventListener("click", function (event) {
+            if (
+              !dropdownMenu.contains(event.target) &&
+              dropdownMenu.classList.contains("active")
+            ) {
+              dropdownMenu.classList.remove("active");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

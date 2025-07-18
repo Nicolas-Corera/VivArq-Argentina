@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Términos y Condiciones - VivArq</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <script type="module" src="js/firebase-config.js" defer></script>
+    <script type="module" src="js/home.js" defer></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/home.css" />
+    <link rel="shortcut icon" href="images/Logo.png" type="image/x-icon" />
+    <script src="js/loadPages.js"></script>
+    <link rel="stylesheet" href="css/legal-styles.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo" id="logo">
+        <a style="cursor: pointer" class="homeBtn"><h1>VivArq</h1></a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="active">Inicio</a></li>
+          <li><a href="allProjects.html">Proyectos</a></li>
+          <li><a href="allProfessionals.html">Profesionales</a></li>
+          <li><a href="contactUs.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div>
+        <div class="auth-buttons" id="authButtons">
+          <a href="login.html" class="btn btn-login">Acceder</a>
+        </div>
+        <div class="user-menu" id="userMenu">
+          <!-- Nuevo indicador de notificaciones al lado del menú de usuario -->
+          <div class="notification-indicator" id="userMenuNotification">0</div>
+          <div class="profile-icon">
+            <img id="userAvatar" src="" alt="Avatar" style="display: none" />
+            <i id="defaultIcon" class="fas fa-user"></i>
+          </div>
+          <div class="user-info">
+            <p class="user-name" id="userName">Irwin Williams</p>
+            <p class="accountTypeProfile" id="accountTypeProfile">
+              Personal account
+            </p>
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="chat.html" class="menu-item" id="messagesLink">
+              <i class="fas fa-envelope"></i>Mensajes
+              <span class="count">0</span>
+            </a>
+            <a href="#" class="menu-item" id="accountLink">
+              <i class="fas fa-user"></i>Mi Cuenta
+            </a>
+            <a href="#" class="menu-item" id="settingsLink">
+              <i class="fas fa-cog"></i>Configuración
+            </a>
+            <a href="#" class="menu-item" id="faqLink">
+              <i class="fa-solid fa-circle-question"></i>FAQ
+            </a>
+            <a href="#" class="menu-item logout" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hiddenMenuToggle">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+    
+      <footer>
+        <div class="footer-container">
+          <div class="footer-column">
+            <h3>VivArq</h3>
+            <p>
+              Conectando profesionales de la construcción con Clientes en
+              Argentina.
+            </p>
+            <div class="social-icons">
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+          <div class="footer-column">
+            <h4>Enlaces</h4>
+            <ul>
+              <li><a href="index.html">Inicio</a></li>
+              <li><a href="allProfessionals.html">Profesionales</a></li>
+              <li><a href="allProjects.html">Proyectos</a></li>
+              <li><a href="contactUs.html">Contacto</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Soporte</h4>
+            <ul>
+              <li><a href="faq.html">Preguntas Frecuentes</a></li>
+              <li>
+                <a href="terms&conditions.html">Términos y Condiciones</a>
+              </li>
+              <li><a href="privacity.html">Política de Privacidad</a></li>
+              <li><a href="#ayuda">Ayuda</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Contacto</h4>
+            <ul class="contact-info">
+              <li>
+                <i class="fas fa-map-marker-alt"></i> Buenos Aires, Argentina
+              </li>
+              <!-- <li><i class="fas fa-phone"></i> +54 11 1234-5678</li> -->
+              <li class="openModalBtnEmail" style="cursor: pointer">
+                <i class="fas fa-envelope"></i><a> contacto@vivarq.com.ar</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 VivArq. Todos los derechos reservados.</p>
+          <span
+            ><p>
+              Creado por
+              <a href="https://www.instagram.com/nicocorera" target="_blank"
+                >Nicolás Corera</a
+              >
+            </p></span
+          >
+        </div>
+      </footer>
+      <div id="emailModal" class="modalEmail">
+        <div class="modal-contentEmail">
+          <span class="close-btnEmail">&times;</span>
+          <h2>Contacto por Email</h2>
+          <form
+            id="emailForm"
+            action="mailto:info@vivarq.com.ar"
+            method="POST"
+            enctype="text/plain"
+            class="formEmial"
+          >
+            <label class="labelEmail" for="subject">Asunto:</label>
+            <select id="subject" name="subject" class="subjectEmail">
+              <option value="Consulta General">Consulta General</option>
+              <option value="Soporte Técnico">Soporte Técnico</option>
+              <option value="Sugerencias">Sugerencias</option>
+            </select>
+            <textarea
+              name="message"
+              id="message"
+              placeholder="Escribí tu mensaje..."
+              style="font-family: 'Montserrat', sans-serif"
+            ></textarea>
+            <button class="btnEmail" type="submit">
+              <i class="fa-solid fa-envelope"></i> Redactar Correo
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        const menuToggle = document.getElementById("menuToggle");
+        const navMenu = document.querySelector(".navbar nav");
+        const userMenu = document.getElementById("userMenu");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const authButtons = document.getElementById("authButtons");
+
+        function isHomePage() {
+          return (
+            window.location.pathname.endsWith("/index.html") ||
+            window.location.pathname === "/" ||
+            window.location.pathname.endsWith("/")
+          );
+        }
+
+        function isMobile() {
+          return window.innerWidth <= 768;
+        }
+
+        function handleNavbarStyle() {
+          const isHome = isHomePage();
+          const isMobileView = isMobile();
+
+          // Si es la página de inicio Y NO estamos en mobile
+          if (isHome && !isMobileView) {
+            // Configurar comportamiento transparente/sólido basado en scroll
+            if (window.scrollY > 10) {
+              navbar.classList.remove("transparent");
+              navbar.classList.add("solid");
+            } else {
+              navbar.classList.add("transparent");
+              navbar.classList.remove("solidFlex");
+            }
+          } else {
+            // Para otras páginas o si es mobile, siempre fondo sólido
+            navbar.classList.add("solidFlex");
+            navbar.classList.remove("transparent");
+          }
+        }
+
+        // Configurar el estilo inicial
+        handleNavbarStyle();
+
+        // Manejar scroll solo para página de inicio en desktop
+        function handleScroll() {
+          if (isHomePage() && !isMobile()) {
+            if (window.scrollY > 10) {
+              navbar.classList.remove("transparent");
+              navbar.classList.add("solid");
+            } else {
+              navbar.classList.add("transparent");
+              navbar.classList.remove("solid");
+            }
+          }
+        }
+
+        // Añadir evento de scroll
+        window.addEventListener("scroll", handleScroll);
+
+        // Manejar cambios de tamaño de ventana
+        window.addEventListener("resize", function () {
+          handleNavbarStyle();
+        });
+
+        // Mostrar/ocultar el menú de navegación en móvil
+        if (menuToggle) {
+          menuToggle.addEventListener("click", function () {
+            navMenu.classList.toggle("active");
+          });
+        }
+
+        // Cerrar el menú de navegación al hacer clic fuera
+        document.addEventListener("click", function (event) {
+          if (
+            navMenu &&
+            !navMenu.contains(event.target) &&
+            menuToggle &&
+            !menuToggle.contains(event.target) &&
+            navMenu.classList.contains("active")
+          ) {
+            navMenu.classList.remove("active");
+          }
+        });
+
+        // Mostrar/ocultar el menú desplegable de usuario
+        if (userMenu && dropdownMenu) {
+          userMenu.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle("active");
+          });
+
+          // Cerrar el menú de usuario al hacer clic fuera
+          document.addEventListener("click", function (event) {
+            if (
+              !dropdownMenu.contains(event.target) &&
+              !userMenu.contains(event.target) &&
+              dropdownMenu.classList.contains("active")
+            ) {
+              dropdownMenu.classList.remove("active");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

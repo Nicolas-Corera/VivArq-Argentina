@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VivArq - Detalles del Proyecto</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/project-details.css" />
+    <script type="module" src="js/firebase-config.js" defer></script>
+    <script type="module" src="js/home.js" defer></script>
+    <script type="module" src="js/projects.js" defer></script>
+    <link rel="shortcut icon" href="images/Logo.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <script src="js/loadPages.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo" id="logo">
+        <a style="cursor: pointer" class="homeBtn"><h1>VivArq</h1></a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="allProjects.html">Proyectos</a></li>
+          <li><a href="allProfessionals.html">Profesionales</a></li>
+          <li><a href="contactUs.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div>
+        <div class="auth-buttons" id="authButtons">
+          <a href="login.html" class="btn btn-login">Acceder</a>
+        </div>
+        <div class="user-menu" id="userMenu">
+          <div class="notification-indicator" id="userMenuNotification">0</div>
+          <div class="profile-icon">
+            <img id="userAvatar" src="" alt="Avatar" style="display: none" />
+            <i id="defaultIcon" class="fas fa-user"></i>
+          </div>
+          <div class="user-info">
+            <p class="user-name" id="userName">Irwin Williams</p>
+            <p class="accountTypeProfile" id="accountTypeProfile">
+              Personal account
+            </p>
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="chat.html" class="menu-item" id="messagesLink">
+              <i class="fas fa-envelope"></i>Mensajes
+              <span class="count">0</span>
+            </a>
+            <a href="#" class="menu-item" id="accountLink">
+              <i class="fas fa-user"></i>Mi Cuenta
+            </a>
+            <a href="#" class="menu-item" id="settingsLink">
+              <i class="fas fa-cog"></i>Configuración
+            </a>
+            <a href="#" class="menu-item" id="faqLink">
+              <i class="fa-solid fa-circle-question"></i>FAQ
+            </a>
+            <a href="#" class="menu-item logout" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hiddenMenuToggle">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="index.html">Inicio</a> &gt;
+          <a href="allProjects.html">Proyectos</a> &gt;
+          <span id="project-title-breadcrumb">Detalles del Proyecto</span>
+        </div>
+        <div class="project-details">
+          <div class="project-header">
+            <div class="project-title-area">
+              <h1 id="project-title">Cargando título del proyecto...</h1>
+              <div class="project-meta">
+                <span class="project-category" id="project-category"
+                  ><i class="fas fa-tag"></i> Categoría</span
+                >
+                <span class="project-location" id="project-location"
+                  ><i class="fas fa-map-marker-alt"></i> Ubicación</span
+                >
+                <span class="project-date" id="project-date"
+                  ><i class="far fa-calendar-alt"></i> Fecha de
+                  publicación</span
+                >
+                <!-- <span class="project-tags" id="project-tags"
+                  ><i class="fas fa-tags"></i> Etiquetas</span
+                > -->
+              </div>
+            </div>
+            <div class="project-actions" id="project-actions"></div>
+          </div>
+          <div class="project-content">
+            <div class="project-main">
+              <div class="project-gallery" id="project-gallery">
+                <div class="main-image">
+                  <img
+                    src="https://placehold.co/600x400"
+                    alt="Imagen principal"
+                    id="main-project-image"
+                  />
+                </div>
+                <div class="thumbnails" id="thumbnails"></div>
+              </div>
+              <div class="project-description">
+                <h2>Descripción del Proyecto</h2>
+                <div id="project-description-content">
+                  <p>Cargando descripción...</p>
+                </div>
+              </div>
+              <div class="project-specs">
+                <h2>Especificaciones</h2>
+                <div class="specs-grid">
+                  <div class="spec-item">
+                    <div class="spec-icon"><i class="fas fa-home"></i></div>
+                    <div class="spec-content">
+                      <h3>Tipo de Propiedad</h3>
+                      <p id="property-type">Cargando...</p>
+                    </div>
+                  </div>
+                  <div class="spec-item">
+                    <div class="spec-icon">
+                      <i class="fas fa-ruler-combined"></i>
+                    </div>
+                    <div class="spec-content">
+                      <h3>Superficie</h3>
+                      <p id="area">Cargando...</p>
+                    </div>
+                  </div>
+                  <div class="spec-item">
+                    <div class="spec-icon">
+                      <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="spec-content">
+                      <h3>Plazo</h3>
+                      <p id="timeframe">Cargando...</p>
+                    </div>
+                  </div>
+                  <div class="spec-item">
+                    <div class="spec-icon">
+                      <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="spec-content">
+                      <h3>Presupuesto</h3>
+                      <p id="budget">Cargando...</p>
+                    </div>
+                  </div>
+                  <div class="spec-item">
+                    <div class="spec-icon">
+                      <i class="fas fa-file-contract"></i>
+                    </div>
+                    <div class="spec-content">
+                      <h3>Términos de Pago</h3>
+                      <p id="payment-terms">Cargando...</p>
+                    </div>
+                  </div>
+                  <div class="spec-item">
+                    <div class="spec-icon">
+                      <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <div class="spec-content">
+                      <h3>Estado</h3>
+                      <p id="project-status">Cargando...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="project-requirements"
+                id="project-requirements-section"
+              >
+                <h2>Requerimientos Especiales</h2>
+                <ul class="requirements-list" id="requirements-list">
+                  <li class="loading">Cargando requerimientos...</li>
+                </ul>
+              </div>
+              <div class="project-additional" id="project-additional-section">
+                <h2>Detalles Técnicos Adicionales</h2>
+                <div id="technical-details-content">
+                  <p>Cargando detalles...</p>
+                </div>
+              </div>
+              <div class="project-references" id="project-references-section">
+                <h2>Referencias</h2>
+                <ul class="references-list" id="references-list">
+                  <li class="loading">Cargando enlaces de referencia...</li>
+                </ul>
+              </div>
+            </div>
+            <div class="project-sidebar">
+              <div class="contractor-card" id="contractor-info">
+                <h3>Publicado por</h3>
+                <div class="contractor-profile">
+                  <div class="contractorPic">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="contractor-details">
+                    <h4 id="contractor-name">Cargando...</h4>
+                    <span class="contratist-badge">
+                      <i class="fas fa-scroll"></i> Cliente
+                    </span>
+                    <span class="verified-badge" id="verified-badge">
+                      <i class="fas fa-check-circle"></i> Verificado
+                    </span>
+                  </div>
+                </div>
+                <div class="contractor-actions">
+                  <button class="primary-btn" id="btn-contact">
+                    Contactar
+                  </button>
+                  <button class="secondary-btn" id="btn-view-profile">
+                    Ver Perfil
+                  </button>
+                </div>
+              </div>
+              <div class="application-section" id="application-section">
+                <h3>Aplicar a este Proyecto</h3>
+                <form id="application-form">
+                  <div class="form-group">
+                    <label for="application-message">Mensaje</label>
+                    <textarea
+                      id="application-message"
+                      name="message"
+                      rows="4"
+                      placeholder="Explica brevemente por qué eres el profesional adecuado para este proyecto"
+                    ></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="application-budget"
+                      >Presupuesto Estimado (ARS)</label
+                    >
+                    <input
+                      type="number"
+                      id="application-budget"
+                      name="budget"
+                      placeholder="Ej. 2500000"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="application-timeframe">Plazo Estimado</label>
+                    <select id="application-timeframe" name="timeframe">
+                      <option value="">Seleccionar plazo</option>
+                      <option value="1week">1 semana</option>
+                      <option value="2weeks">2 semanas</option>
+                      <option value="1month">1 mes</option>
+                      <option value="2months">2 meses</option>
+                      <option value="3months">3 meses</option>
+                      <option value="6months">6 meses</option>
+                      <option value="more">Más de 6 meses</option>
+                    </select>
+                  </div>
+                  <button type="submit" class="primary-btn" id="btn-apply">
+                    Enviar Propuesta
+                  </button>
+                </form>
+              </div>
+              <div class="similar-projects" id="similar-projects">
+                <h3>Proyectos Similares</h3>
+                <div class="similar-projects-list" id="similar-projects-list">
+                  <div class="loading">Cargando proyectos...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal" id="contact-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Contactar al Cliente</h2>
+            <button class="close-btn" id="close-contact-modal">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              ¿Quieres iniciar una conversación con
+              <span id="modal-contractor-name">este Cliente</span>?
+            </p>
+            <div class="form-actions">
+              <button class="secondary-btn" id="cancel-contact">
+                Cancelar
+              </button>
+              <button class="primary-btn" id="start-chat">Iniciar Chat</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3>VivArq</h3>
+          <p>
+            Conectando profesionales de la construcción con Clientes en
+            Argentina.
+          </p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h4>Enlaces</h4>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="allProfessionals.html">Profesionales</a></li>
+            <li><a href="allProjects.html">Proyectos</a></li>
+            <li><a href="contactUs.html">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="faq.html">Preguntas Frecuentes</a></li>
+            <li><a href="terms&conditions.html">Términos y Condiciones</a></li>
+            <li><a href="#privacidad">Política de Privacidad</a></li>
+            <li><a href="#ayuda">Ayuda</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contacto</h4>
+          <ul class="contact-info">
+            <li>
+              <i class="fas fa-map-marker-alt"></i> Buenos Aires, Argentina
+            </li>
+            <li><i class="fas fa-phone"></i> +54 11 1234-5678</li>
+            <li><i class="fas fa-envelope"></i> info@vivarq.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 VivArq. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+    <script type="module" src="js/project-detail.js" defer></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        const menuToggle = document.getElementById("menuToggle");
+        const navMenu = document.querySelector(".navbar nav");
+        const userMenu = document.getElementById("userMenu");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const authButtons = document.getElementById("authButtons");
+        navbar.classList.add("solidFlex");
+        menuToggle.addEventListener("click", function () {
+          navMenu.classList.toggle("active");
+        });
+        document.addEventListener("click", function (event) {
+          if (
+            !navMenu.contains(event.target) &&
+            !menuToggle.contains(event.target) &&
+            navMenu.classList.contains("active")
+          ) {
+            navMenu.classList.remove("active");
+          }
+        });
+        if (userMenu) {
+          userMenu.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle("active");
+          });
+          document.addEventListener("click", function (event) {
+            if (
+              !dropdownMenu.contains(event.target) &&
+              dropdownMenu.classList.contains("active")
+            ) {
+              dropdownMenu.classList.remove("active");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

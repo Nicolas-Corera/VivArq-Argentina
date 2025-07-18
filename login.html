@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VivArq - Iniciar Sesión o Registrarse</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/login.css" />
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <link rel="shortcut icon" href="images/Logo.png" type="image/x-icon" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo" id="logo">
+        <a style="cursor: pointer" class="homeBtn"><h1>VivArq</h1></a>
+      </div>
+    </header>
+
+    <div id="authMessage" class="messageDiv" style="display: none"></div>
+
+    <main class="auth-container">
+      <div class="auth-card">
+        <!-- Tabs for Login and Register -->
+        <div class="auth-tabs">
+          <button id="loginTab" class="tab active">Iniciar Sesión</button>
+          <button id="registerTab" class="tab">Crear Cuenta</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginSection" class="auth-section show">
+          <div class="auth-header">
+            <h2>Iniciar Sesión</h2>
+            <p>Bienvenido de nuevo a VivArq</p>
+          </div>
+          <form id="loginForm">
+            <div class="input-group">
+              <label for="emailLogin">Correo Electrónico</label>
+              <div class="input-with-icon">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="emailLogin" name="email" required />
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="passwordLogin">Contraseña</label>
+              <div class="input-with-icon">
+                <i class="fas fa-lock"></i>
+                <input
+                  type="password"
+                  id="passwordLogin"
+                  name="password"
+                  required
+                />
+                <i class="fas fa-eye toggle-password"></i>
+              </div>
+            </div>
+            <div class="forgot-password">
+              <a href="#" id="forgotPasswordLink">¿Olvidaste tu contraseña?</a>
+            </div>
+            <button
+              type="submit"
+              id="submitLogin"
+              class="btn btn-primary btn-block"
+            >
+              Iniciar Sesión
+            </button>
+          </form>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerSection" class="auth-section">
+          <div class="auth-header">
+            <h2>Crear una Cuenta</h2>
+            <p>Únete a la comunidad de VivArq</p>
+          </div>
+
+          <div class="account-type-selector">
+            <label class="account-type-btn" for="contractor">
+              <input
+                type="checkbox"
+                id="contractor"
+                name="account-type"
+                data-type="Cliente"
+              />
+              <i class="fas fa-briefcase"></i>
+              <span>Soy Cliente</span>
+            </label>
+            <label class="account-type-btn" for="professional">
+              <input
+                type="checkbox"
+                id="professional"
+                name="account-type"
+                data-type="Profesional"
+              />
+              <i class="fas fa-hard-hat"></i>
+              <span>Soy Profesional</span>
+            </label>
+          </div>
+
+          <form id="registerForm">
+            <input
+              type="hidden"
+              id="accountType"
+              name="accountType"
+              value="contractor"
+            />
+
+            <div class="input-group">
+              <label for="name_surname">Nombre Completo</label>
+              <div class="input-with-icon">
+                <i class="fas fa-user"></i>
+                <input type="text" id="name_surname" name="nombre" required />
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="email">Correo Electrónico</label>
+              <div class="input-with-icon">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" name="email" required />
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="password">Contraseña</label>
+              <div class="input-with-icon">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" name="password" required />
+                <i class="fas fa-eye toggle-password"></i>
+              </div>
+              <small class="smallText">
+                La contraseña debe tener entre 8 y 16 caracteres, incluir
+                mayúsculas, minúsculas, números y símbolos.
+              </small>
+              <div class="password-strength" id="passwordStrength">
+                <div class="strength-bar">
+                  <div class="strength-level"></div>
+                </div>
+                <span class="strength-text">Débil</span>
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="documentNumber">Número de Documento</label>
+              <div class="input-with-icon">
+                <i class="fa-solid fa-id-card"></i>
+                <input
+                  type="number"
+                  id="documentNumber"
+                  name="documentNumber"
+                  required
+                />
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="phoneNumber">Número de Teléfono</label>
+              <div class="input-with-icon">
+                <i class="fa-solid fa-phone"></i>
+                <input
+                  type="number"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Professional Fields -->
+            <div id="professionalFields" class="additional-fields hidden">
+              <div class="input-group">
+                <label for="profession">Profesión</label>
+                <div class="input-with-icon">
+                  <select id="profession" name="profession">
+                    <option value="" disabled selected>
+                      Selecciona tu profesión
+                    </option>
+                    <option value="Arquitecto">Arquitecto</option>
+                    <option value="Ingeniero">Ingeniero Civil</option>
+                    <option value="Constructor">Constructor</option>
+                    <option value="Electricista">Electricista</option>
+                    <option value="Plomero">Plomero</option>
+                    <option value="Gasista">Gasista</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-group" id="otraProfesionContainer">
+                <label for="otraProfesion">Especifica tu profesión</label>
+                <div class="input-with-icon">
+                  <i class="fas fa-hard-hat"></i>
+                  <input
+                    type="text"
+                    id="otraProfesion"
+                    name="otraProfesion"
+                    placeholder="Escribe tu profesión"
+                  />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="experience">Años de Experiencia</label>
+                <div class="input-with-icon">
+                  <i class="fas fa-star"></i>
+                  <input
+                    type="number"
+                    id="experience"
+                    name="experience"
+                    min="0"
+                    max="50"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Contractor Fields -->
+            <div id="contractorFields" class="additional-fields">
+              <div class="input-group">
+                <label for="companyName">Nombre de la Empresa (opcional)</label>
+                <div class="input-with-icon">
+                  <i class="fas fa-building"></i>
+                  <input type="text" id="companyName" name="companyName" />
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="location">Ubicación</label>
+              <div class="input-with-icon">
+                <select id="location" name="location" required>
+                  <option value="" disabled selected>
+                    Selecciona tu ubicación
+                  </option>
+                  <option value="CABA">CABA</option>
+                  <option value="GBA">GBA</option>
+                  <option value="Buenos Aires (interior)">
+                    Buenos Aires (interior)
+                  </option>
+                  <option value="Córdoba">Córdoba</option>
+                  <option value="Rosario">Rosario</option>
+                  <option value="Mendoza">Mendoza</option>
+                  <option value="Tucumán">Tucumán</option>
+                  <option value="Otra provincia">Otra provincia</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="input-group" id="otherLocationContainer">
+              <label for="otherLocation">Especifica tu provincia</label>
+              <div class="input-with-icon">
+                <i class="fa-solid fa-location-dot"></i>
+                <input
+                  type="text"
+                  id="otherLocation"
+                  name="otherLocation"
+                  placeholder="Escribe tu provincia"
+                />
+              </div>
+            </div>
+
+            <div class="terms-checkbox">
+              <input
+                type="checkbox"
+                id="termsAgree"
+                name="termsAgree"
+                required
+              />
+              <label for="termsAgree"
+                >Acepto los
+                <a href="terms&conditions.html">Términos y Condiciones</a></label
+              >
+            </div>
+            <div class="terms-checkbox">
+              <input
+                type="checkbox"
+                id="privacity"
+                name="privacity"
+                required
+              />
+              <label for="privacity"
+                >Acepto los
+                <a href="privacity.html">Política de Privacidad</a></label
+              >
+            </div>
+
+            <button type="submit" id="submit" class="btn btn-primary btn-block">
+              Crear Cuenta
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <!-- Reset Password Modal -->
+    <div id="resetPasswordModal" class="reset-password-modal">
+      <div class="reset-password-content">
+        <span id="closeModal" class="reset-password-close">
+          <i class="fa-solid fa-xmark"></i>
+        </span>
+        <h2>Restablecer Contraseña</h2>
+        <div id="resetMessage" class="reset-message"></div>
+        <input
+          type="email"
+          id="emailReset"
+          class="reset-password-input"
+          placeholder="Ingresa tu correo electrónico"
+          required
+        />
+        <button class="reset-password-button" id="sendEmailButton">
+          Enviar
+        </button>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-bottom">
+        <p>&copy; 2025 VivArq. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+
+    <!-- Firebase SDK and Custom Scripts -->
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Password strength functionality
+        const passwordInput = document.getElementById("password");
+        if (passwordInput) {
+          const strengthBar = document.querySelector(".strength-level");
+          const strengthText = document.querySelector(".strength-text");
+          const passwordStrengthDiv =
+            document.getElementById("passwordStrength");
+
+          // Ocultar la barra de fortaleza inicialmente
+          passwordStrengthDiv.style.display = "none";
+
+          passwordInput.addEventListener("input", function () {
+            const password = this.value;
+
+            // Mostrar u ocultar según si hay texto en el campo
+            if (password.length === 0) {
+              passwordStrengthDiv.style.display = "none";
+            } else {
+              passwordStrengthDiv.style.display = "block";
+              const strength = checkPasswordStrength(password);
+
+              strengthBar.style.width = strength.percentage + "%";
+              strengthBar.style.backgroundColor = strength.color;
+
+              strengthText.textContent = strength.text;
+              strengthText.style.color = strength.color;
+            }
+          });
+        }
+        // Tab switching functionality
+        const loginTab = document.getElementById("loginTab");
+        const registerTab = document.getElementById("registerTab");
+        const loginSection = document.getElementById("loginSection");
+        const registerSection = document.getElementById("registerSection");
+
+        // Función para resetear todos los campos del formulario de registro
+        function resetRegisterForm() {
+          const registerForm = registerSection.querySelector("form");
+          if (registerForm) {
+            // Resetear los campos de texto y de contraseña
+            const inputFields = registerForm.querySelectorAll(
+              "input[type='text'], input[type='email'], input[type='password'], input[type='tel']"
+            );
+            inputFields.forEach((input) => {
+              input.value = "";
+            });
+
+            // Resetear los selects a su valor por defecto
+            const selectFields = registerForm.querySelectorAll("select");
+            selectFields.forEach((select) => {
+              select.selectedIndex = 0;
+              // Disparar el evento change para activar cualquier lógica dependiente
+              const event = new Event("change");
+              select.dispatchEvent(event);
+            });
+
+            // Deseleccionar los checkboxes
+            const checkboxes = registerForm.querySelectorAll(
+              "input[type='checkbox']"
+            );
+            checkboxes.forEach((checkbox) => {
+              checkbox.checked = false;
+              // Disparar el evento change para actualizar cualquier estado dependiente
+              const event = new Event("change");
+              checkbox.dispatchEvent(event);
+            });
+
+            // Ocultar los campos condicionales
+            const professionalFields =
+              document.getElementById("professionalFields");
+            const contractorFields =
+              document.getElementById("contractorFields");
+            const otraProfesionContainer = document.getElementById(
+              "otraProfesionContainer"
+            );
+            const otherLocationContainer = document.getElementById(
+              "otherLocationContainer"
+            );
+
+            if (professionalFields) professionalFields.style.display = "none";
+            if (contractorFields) contractorFields.style.display = "none";
+            if (otraProfesionContainer)
+              otraProfesionContainer.style.display = "none";
+            if (otherLocationContainer)
+              otherLocationContainer.style.display = "none";
+
+            // Quitar clase active de los labels de tipo de cuenta
+            const accountTypeLabels =
+              registerForm.querySelectorAll("label.account-type");
+            accountTypeLabels.forEach((label) => {
+              label.classList.remove("active");
+            });
+
+            // Deshabilitar el botón de registro
+            const submitButton = document.getElementById("submit");
+            if (submitButton) {
+              submitButton.disabled = true;
+            }
+            const passwordStrengthDiv =
+              document.getElementById("passwordStrength");
+            passwordStrengthDiv.style.display = "none";
+          }
+        }
+
+        // Función para resetear todos los campos del formulario de login
+        function resetLoginForm() {
+          const loginForm = loginSection.querySelector("form");
+          if (loginForm) {
+            // Resetear los campos de email y contraseña
+            const emailInput = document.getElementById("emailLogin");
+            const passwordInput = document.getElementById("passwordLogin");
+            if (emailInput) emailInput.value = "";
+            if (passwordInput) passwordInput.value = "";
+
+            // Deshabilitar el botón de inicio de sesión
+            const submitButton = document.getElementById("submitLogin");
+            if (submitButton) {
+              submitButton.disabled = true;
+            }
+          }
+        }
+
+        loginTab.addEventListener("click", () => {
+          loginTab.classList.add("active");
+          registerTab.classList.remove("active");
+          loginSection.classList.add("show");
+          registerSection.classList.remove("show");
+
+          // Resetear el formulario de registro al cambiar a la pestaña de login
+          resetRegisterForm();
+        });
+
+        registerTab.addEventListener("click", () => {
+          registerTab.classList.add("active");
+          loginTab.classList.remove("active");
+          registerSection.classList.add("show");
+          loginSection.classList.remove("show");
+
+          // Resetear el formulario de login al cambiar a la pestaña de registro
+          resetLoginForm();
+        });
+
+        // Password toggle functionality
+        const togglePasswordButtons =
+          document.querySelectorAll(".toggle-password");
+
+        togglePasswordButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const passwordInput = this.previousElementSibling;
+
+            if (passwordInput.type === "password") {
+              passwordInput.type = "text";
+              this.classList.remove("fa-eye");
+              this.classList.add("fa-eye-slash");
+            } else {
+              passwordInput.type = "password";
+              this.classList.remove("fa-eye-slash");
+              this.classList.add("fa-eye");
+            }
+          });
+        });
+      });
+
+      // Password strength calculation function
+      function checkPasswordStrength(password) {
+        let strength = {
+          percentage: 0,
+          color: "#888",
+          text: "Débil",
+        };
+
+        if (password.length === 0) {
+          return strength;
+        }
+
+        let score = 0;
+
+        if (password.length >= 8) score += 20;
+        if (password.length >= 12) score += 10;
+
+        if (/[a-z]/.test(password)) score += 10;
+        if (/[A-Z]/.test(password)) score += 15;
+        if (/\d/.test(password)) score += 15;
+        if (/[@$!%*?&]/.test(password)) score += 20;
+
+        if (/[a-z].*[A-Z]|[A-Z].*[a-z]/.test(password)) score += 5;
+        if (/\d.*[@$!%*?&]|[@$!%*?&].*\d/.test(password)) score += 5;
+
+        if (score >= 80) {
+          strength.percentage = 100;
+          strength.color = "#2ecc71";
+          strength.text = "Fuerte";
+        } else if (score >= 50) {
+          strength.percentage = 66;
+          strength.color = "#f39c12";
+          strength.text = "Media";
+        } else {
+          strength.percentage = 33;
+          strength.color = "#ff4d4d";
+          strength.text = "Débil";
+        }
+
+        return strength;
+      }
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        navbar.classList.add("solidFlex");
+      });
+    </script>
+  </body>
+</html>

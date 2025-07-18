@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat - VivArq</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <script type="module" src="js/firebase-config.js" defer></script>
+    <script type="module" src="js/home.js" defer></script>
+    <script type="module" src="js/chat.js" defer></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/chat.css" />
+    <link rel="shortcut icon" href="images/Logo.png" type="image/x-icon" />
+    <script src="js/loadPages.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo" id="logo">
+        <a style="cursor: pointer" class="homeBtn"><h1>VivArq</h1></a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="allProjects.html">Proyectos</a></li>
+          <li><a href="allProfessionals.html">Profesionales</a></li>
+          <li><a href="contactUs.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div>
+        <div class="auth-buttons" id="authButtons">
+          <a href="login.html" class="btn btn-login">Acceder</a>
+        </div>
+        <div class="user-menu" id="userMenu">
+          <!-- Nuevo indicador de notificaciones al lado del menú de usuario -->
+          <div class="notification-indicator" id="userMenuNotification">0</div>
+            <div class="profile-icon">
+              <img id="userAvatar" src="" alt="Avatar" style="display: none" />
+              <i id="defaultIcon" class="fas fa-user"></i>
+            </div>
+          <div class="user-info">
+            <p class="user-name" id="userName">Irwin Williams</p>
+            <p class="accountTypeProfile" id="accountTypeProfile">
+              Personal account
+            </p>
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="chat.html" class="menu-item" id="messagesLink">
+              <i class="fas fa-envelope"></i>Mensajes
+              <span class="count">0</span>
+            </a>
+            <a href="#" class="menu-item" id="accountLink">
+              <i class="fas fa-user"></i>Mi Cuenta
+            </a>
+            <a href="#" class="menu-item" id="settingsLink">
+              <i class="fas fa-cog"></i>Configuración
+            </a>
+            <a href="#" class="menu-item" id="faqLink">
+              <i class="fa-solid fa-circle-question"></i>FAQ
+            </a>
+            <a href="#" class="menu-item logout" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hiddenMenuToggle">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+    <div class="chat-container">
+      <div class="contacts-sidebar">
+        <div class="search-contacts">
+          <div class="input-with-icon">
+            <i class="fas fa-search"></i
+            ><input
+              type="text"
+              id="searchContacts"
+              placeholder="Buscar conversaciones..."
+            />
+          </div>
+        </div>
+        <div class="empty-contacts-placeholder">
+          <i class="fas fa-address-book"></i>
+          <h4>No hay contactos</h4>
+          <p>Aún no tienes conversaciones iniciadas</p>
+        </div>
+        <div
+          class="contacts-list"
+          id="contactsList"
+          style="display: none"
+        ></div>
+      </div>
+      <div class="chat-main">
+        <div class="empty-chat-placeholder" id="emptyChatPlaceholder">
+          <div class="placeholder-content">
+            <i class="fas fa-comments"></i>
+            <h3>Selecciona un chat para comenzar</h3>
+            <p>Elige un contacto de tu lista para iniciar una conversación</p>
+          </div>
+        </div>
+        <div class="chat-header chatHidden" id="chatHeader">
+          <div class="chat-user-info">
+            <div class="chat-userData">
+              <h3 id="chatUserName">Nombre del contacto</h3>
+              <div class="chat-project-info" id="chatProjectInfo">
+                <i class="fas fa-briefcase"></i>
+                <span>Proyecto: </span><span id="projectTitleName"></span>
+              </div>
+            </div>
+          </div>
+          <div class="chat-actions">
+            <button class="btn-icon" id="viewProfileBtn" title="Ver Perfil">
+              <i class="fas fa-user"></i></button
+            ><button
+              class="btn-icon"
+              id="createComputoBtn"
+              title="Crear Cómputo"
+            >
+              <i class="fas fa-file-contract"></i>
+            </button>
+            <button class="btn-icon" id="moreThingsBtn" title="Ver más">
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+            <div class="dropMoreThings" id="dropMoreThings">
+              <div class="drop-MoreThings" id="moreThingsDropdown">
+                <i class="fas fa-trash"></i>
+                <span id="deleteChat">Eliminar chat</span>
+              </div>
+            </div>
+            <button
+              class="btn-icon"
+              style="display: none"
+              id="projectShowBtn"
+              title="Mostrar información del proyecto"
+            >
+              <i class="fas fa-arrow-left"></i>
+            </button>
+          </div>
+        </div>
+        <div class="chat-messages chatHidden" id="chatMessages"></div>
+        <div class="chat-input-area chatHidden" id="chatInputArea">
+          <div class="message-input">
+            <textarea
+              id="messageInput"
+              placeholder="Escribe un mensaje..."
+            ></textarea>
+          </div>
+          <button class="send-button" id="sendMessageBtn">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+      <div class="project-sidebar chatHidden" id="projectSidebar">
+        <div class="sidebar-header">
+          <h3>Información del Proyecto</h3>
+          <button class="btn-icon" id="closeSidebarBtn">
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+        <div class="project-details">
+          <div class="project-image">
+            <img
+              src="https://placehold.co/600x400"
+              alt="Proyecto"
+              id="projectImage"
+            />
+          </div>
+          <h4 id="projectTitle">Remodelación Local Palermo</h4>
+          <div class="project-info-item">
+            <i class="fas fa-map-marker-alt"></i
+            ><span id="projectLocation">Palermo, CABA</span>
+          </div>
+          <div class="project-info-item">
+            <i class="fas fa-calendar-alt"></i
+            ><span id="projectDates">Publicado: 15/04/2025</span>
+          </div>
+          <div class="project-info-item">
+            <i class="fas fa-dollar-sign"></i
+            ><span id="projectBudget">Presupuesto: $1.500.000</span>
+          </div>
+          <div class="project-description" id="projectDescription">
+            <h5>Descripción:</h5>
+            <p>
+              Local comercial de 120m² para ser remodelado completamente. Se
+              necesita diseño interior, planos, y supervisión de obra.
+            </p>
+          </div>
+          <div class="project-actions">
+            <button class="btn btn-primary" id="viewFullProjectBtn">
+              Ver Proyecto Completo</button
+            ><button class="btn btn-secondary" id="generateComputoBtn">
+              Generar Cómputo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document
+        .getElementById("moreThingsBtn")
+        .addEventListener("click", function (event) {
+          const dropMoreThings = document.getElementById("dropMoreThings");
+          if (
+            dropMoreThings.style.display === "none" ||
+            dropMoreThings.style.display === ""
+          ) {
+            dropMoreThings.style.display = "block";
+          } else {
+            dropMoreThings.style.display = "none";
+          }
+          event.stopPropagation(); // Evita que el clic en el botón cierre inmediatamente el menú
+        });
+      document.addEventListener("click", function (event) {
+        const dropMoreThings = document.getElementById("dropMoreThings");
+        const moreThingsBtn = document.getElementById("moreThingsBtn");
+        if (
+          !dropMoreThings.contains(event.target) &&
+          !moreThingsBtn.contains(event.target)
+        ) {
+          dropMoreThings.style.display = "none";
+        }
+      });
+    </script>
+    <script>
+      function toggleProjectSidebar() {
+        const projectSidebar = document.getElementById("projectSidebar");
+        const chatMain = document.querySelector(".chat-main");
+        const projectShowBtn = document.getElementById("projectShowBtn");
+        if (projectSidebar.style.display !== "none") {
+          projectSidebar.style.display = "none";
+          chatMain.style.flex = "1";
+          projectShowBtn.style.display = "flex";
+        } else {
+          projectSidebar.style.display = "flex";
+          projectShowBtn.style.display = "none";
+        }
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        const closeSidebarBtn = document.getElementById("closeSidebarBtn");
+        if (closeSidebarBtn) {
+          closeSidebarBtn.addEventListener("click", toggleProjectSidebar);
+        }
+        const projectShowBtn = document.getElementById("projectShowBtn");
+        if (projectShowBtn) {
+          projectShowBtn.addEventListener("click", toggleProjectSidebar);
+        }
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        const menuToggle = document.getElementById("menuToggle");
+        const navMenu = document.querySelector(".navbar nav");
+        const userMenu = document.getElementById("userMenu");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const authButtons = document.getElementById("authButtons");
+        navbar.classList.add("solidFlex");
+        menuToggle.addEventListener("click", function () {
+          navMenu.classList.toggle("active");
+        });
+        document.addEventListener("click", function (event) {
+          if (
+            !navMenu.contains(event.target) &&
+            !menuToggle.contains(event.target) &&
+            navMenu.classList.contains("active")
+          ) {
+            navMenu.classList.remove("active");
+          }
+        });
+        if (userMenu) {
+          userMenu.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle("active");
+          });
+          document.addEventListener("click", function (event) {
+            if (
+              !dropdownMenu.contains(event.target) &&
+              dropdownMenu.classList.contains("active")
+            ) {
+              dropdownMenu.classList.remove("active");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

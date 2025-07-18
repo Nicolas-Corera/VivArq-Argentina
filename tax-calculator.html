@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora de Impuestos - VivArq</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <script type="module" src="js/firebase-config.js" defer></script>
+    <script type="module" src="js/home.js" defer></script>
+    <script type="module" src="js/tax-calculator.js" defer></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/tax-calculator.css" />
+    <link rel="shortcut icon" href="images/Logo.png" type="image/x-icon" />
+    <script src="js/loadPages.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo" id="logo">
+        <a style="cursor: pointer" class="homeBtn"><h1>VivArq</h1></a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="allProjects.html">Proyectos</a></li>
+          <li><a href="allProfessionals.html">Profesionales</a></li>
+          <li><a href="contactUs.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div>
+        <div class="auth-buttons" id="authButtons">
+          <a href="login.html" class="btn btn-login">Acceder</a>
+        </div>
+        <div class="user-menu" id="userMenu">
+          <!-- Nuevo indicador de notificaciones al lado del menú de usuario -->
+          <div class="notification-indicator" id="userMenuNotification">0</div>
+            <div class="profile-icon">
+              <img id="userAvatar" src="" alt="Avatar" style="display: none" />
+              <i id="defaultIcon" class="fas fa-user"></i>
+            </div>
+          <div class="user-info">
+            <p class="user-name" id="userName">Irwin Williams</p>
+            <p class="accountTypeProfile" id="accountTypeProfile">
+              Personal account
+            </p>
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="chat.html" class="menu-item" id="messagesLink">
+              <i class="fas fa-envelope"></i>Mensajes
+              <span class="count">0</span>
+            </a>
+            <a href="#" class="menu-item" id="accountLink">
+              <i class="fas fa-user"></i>Mi Cuenta
+            </a>
+            <a href="#" class="menu-item" id="settingsLink">
+              <i class="fas fa-cog"></i>Configuración
+            </a>
+            <a href="#" class="menu-item" id="faqLink">
+              <i class="fa-solid fa-circle-question"></i>FAQ
+            </a>
+            <a href="#" class="menu-item logout" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hiddenMenuToggle">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+    <div class="tax-calculator-container">
+      <!-- <div class="tax-calculator-sidebar">
+          <div class="calculation-templates">
+            <h3>Plantilla de Cálculo</h3>
+            <div class="template-list">
+              <div class="template-item active" data-template="comp&presu">
+                <i class="fas fa-calculator"></i>
+                <span>Cómputo y Presupuesto</span>
+              </div>
+              <div class="template-item" data-template="aportes">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Aportes Colegiales</span>
+              </div>
+              <div class="template-item" data-template="impuestos">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Impuestos</span>
+              </div>
+              <div class="template-item" data-template="personalizado">
+                <i class="fas fa-file-alt"></i>
+                <span>Cálculo Personalizado</span>
+              </div>
+            </div>
+          </div>
+          <div class="calculation-history">
+            <h3>Cálculos Recientes</h3>
+            <div class="history-list" id="calculationHistory">
+            </div>
+          </div>
+        </div> -->
+      <div class="tax-calculator-main">
+        <div class="calculator-header">
+          <h2>Calculadora de Cómputo y Presupuesto</h2>
+          <div class="calculator-actions">
+            <button class="btn btn-secondary" id="saveAsDraftBtn">
+              <i class="fas fa-save"></i> Guardar Cálculo
+            </button>
+            <button class="btn btn-primary" id="generatePdfBtn">
+              <i class="fas fa-file-pdf"></i> Generar PDF
+            </button>
+            <button class="btn btn-third" id="sendCalculationBtn">
+              <i class="fa-solid fa-paper-plane"></i> Enviar al Cliente
+            </button>
+          </div>
+        </div>
+        <div class="calculator-form-container">
+          <form id="taxCalculatorForm">
+            <div class="form-section">
+              <h3>Información del Proyecto</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="projectTitle">Título del Proyecto</label>
+                  <input
+                    type="text"
+                    id="projectTitle"
+                    name="projectTitle"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="projectType">Tipo de Proyecto</label>
+                  <input
+                    type="text"
+                    id="projectType"
+                    name="projectType"
+                    required
+                  />
+                  <!-- <select id="projectType" name="projectType" required>
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option value="construccion">Construcción</option>
+                    <option value="reforma">Reforma/Remodelación</option>
+                    <option value="diseno">Diseño Arquitectónico</option>
+                    <option value="instalacion">Instalación</option>
+                    <option value="mantenimiento">Mantenimiento</option>
+                    <option value="otro">Otro</option>
+                  </select> -->
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="projectLocation">Ubicación</label>
+                  <input
+                    type="text"
+                    id="projectLocation"
+                    name="projectLocation"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="projectDescription">Descripción del Proyecto</label>
+                <textarea
+                  id="projectDescription"
+                  name="projectDescription"
+                  rows="4"
+                  required
+                ></textarea>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>Información del Cliente</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="clientName">Nombre Completo / Razón Social</label>
+                  <input
+                    type="text"
+                    id="clientName"
+                    name="clientName"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="clientDocument">DNI / CUIT</label>
+                  <input
+                    type="text"
+                    id="clientDocument"
+                    name="clientDocument"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="clientAddress">Domicilio Legal</label>
+                  <input
+                    type="text"
+                    id="clientAddress"
+                    name="clientAddress"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="clientNumber">Teléfono de Contacto</label>
+                  <input
+                    type="text"
+                    id="clientNumber"
+                    name="clientNumber"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="clientContact">Mail de Contacto</label>
+                  <input
+                    type="email"
+                    id="clientContact"
+                    name="clientContact"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>Información del Profesional</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="professionalName"
+                    >Nombre Completo / Razón Social</label
+                  >
+                  <input
+                    type="text"
+                    id="professionalName"
+                    name="professionalName"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="professionalDocument">DNI / CUIT</label>
+                  <input
+                    type="text"
+                    id="professionalDocument"
+                    name="professionalDocument"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="professionalAddress">Domicilio Legal</label>
+                  <input
+                    type="text"
+                    id="professionalAddress"
+                    name="professionalAddress"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="professionalNumber">Teléfono de Contacto</label>
+                  <input
+                    type="text"
+                    id="professionalNumber"
+                    name="professionalNumber"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="professionalContact">Mail de Contacto</label>
+                  <input
+                    type="email"
+                    id="professionalContact"
+                    name="professionalContact"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="professionalMatricula"
+                    >Matrícula Profesional (opcional)</label
+                  >
+                  <input
+                    type="text"
+                    id="professionalMatricula"
+                    name="professionalMatricula"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="professionalCategory">Categoría Impositiva</label>
+                  <select
+                    id="professionalCategory"
+                    name="professionalCategory"
+                    required
+                  >
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option value="monotributo">Monotributo</option>
+                    <option value="responsable_inscripto">
+                      Responsable Inscripto
+                    </option>
+                    <option value="otro">Otro</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>Parámetros del Cálculo</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="surfaceType">Tipo de Superficie</label>
+                  <select id="surfaceType" name="surfaceType" required>
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option value="vivienda">Vivienda Unifamiliar</option>
+                    <option value="multifamiliar">
+                      Edificio Multifamiliar
+                    </option>
+                    <option value="comercial">Local Comercial</option>
+                    <option value="industrial">Nave Industrial</option>
+                    <option value="oficinas">Oficinas</option>
+                    <option value="otro">Otro</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="constructionQuality"
+                    >Calidad de Construcción</label
+                  >
+                  <select
+                    id="constructionQuality"
+                    name="constructionQuality"
+                    required
+                  >
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option value="economica">Económica</option>
+                    <option value="media">Media</option>
+                    <option value="buena">Buena</option>
+                    <option value="lujosa">Lujosa</option>
+                    <option value="premium">Premium</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="totalSurface">Superficie Total (m²)</label>
+                  <input
+                    type="text"
+                    id="totalSurface"
+                    name="totalSurface"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>Cómputo y Presupuesto</h3>
+              <div
+                class="calculation-table-container"
+                id="taxCalculatorContainer"
+              >
+                <div class="calculation-table-actions">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="addItemBtn"
+                  >
+                    <i class="fas fa-plus"></i> Agregar Ítem
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="importExcelBtn"
+                  >
+                    <i class="fas fa-file-import"></i> Importar Excel
+                  </button>
+                </div>
+                <div class="calculation-table">
+                  <table id="budgetTable">
+                    <thead>
+                      <tr>
+                        <th>Ítem</th>
+                        <th>Descripción</th>
+                        <th>Unidad</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="budgetTableBody">
+                      <tr class="table-row">
+                        <td>1</td>
+                        <td>
+                          <input
+                            type="text"
+                            name="itemDesc[]"
+                            placeholder="Descripción"
+                            required
+                          />
+                        </td>
+                        <td>
+                          <select name="itemUnit[]" required>
+                            <option value="m">m</option>
+                            <option value="m2">m²</option>
+                            <option value="m3">m³</option>
+                            <option value="ml">ml</option>
+                            <option value="kg">kg</option>
+                            <option value="u">u</option>
+                            <option value="gl">gl</option>
+                            <option value="otra">Otra</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            name="itemQty[]"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="0.00"
+                            required
+                            class="qty-input"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            name="itemPrice[]"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="0.00"
+                            required
+                            class="price-input"
+                          />
+                        </td>
+                        <td class="subtotal">0.00</td>
+                        <td>
+                          <button type="button" class="btn-icon delete-row">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="5" class="text-right">
+                          <strong>Subtotal Materiales:</strong>
+                        </td>
+                        <td id="subtotalMaterials" class="total-cell">0.00</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td colspan="5" class="text-right">
+                          <strong>Mano de Obra (%):</strong>
+                        </td>
+                        <td class="input-cell">
+                          <input
+                            type="number"
+                            id="laborPercentage"
+                            name="laborPercentage"
+                            min="0"
+                            max="100"
+                            value="30"
+                            step="1"
+                            class="percentage-input"
+                          />
+                        </td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td colspan="5" class="text-right">
+                          <strong>Subtotal Mano de Obra:</strong>
+                        </td>
+                        <td id="subtotalLabor" class="total-cell">0.00</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td colspan="5" class="text-right">
+                          <strong>Costo Total de Obra:</strong>
+                        </td>
+                        <td id="totalCost" class="total-cell">0.00</td>
+                        <td></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>Cálculo de Honorarios Profesionales</h3>
+              <div class="honorarios-calculator">
+                <div class="honorarios-tables">
+                  <table class="honorarios-table">
+                    <thead>
+                      <tr>
+                        <th colspan="3">
+                          Tasas para Honorarios Profesionales - Categoria 8º -
+                          OBRAS EN GENERAL DE ARQUITECTURA E INGENIERIA
+                          (Proyecto y Dirección)
+                        </th>
+                      </tr>
+                      <tr>
+                        <th>Monto de la Obra</th>
+                        <th>Proyecto y Dirección (%)</th>
+                        <th>Total (%)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Hasta $60.000.000,00</td>
+                        <td>8.50%</td>
+                        <td>8.50%</td>
+                      </tr>
+                      <tr>
+                        <td>$60.000.000,00 - $300.000.000,00</td>
+                        <td>8.00%</td>
+                        <td>8.00%</td>
+                      </tr>
+                      <tr>
+                        <td>$300.000.000,00 - $600.000.000,00</td>
+                        <td>7.50%</td>
+                        <td>7.50%</td>
+                      </tr>
+                      <tr>
+                        <td>$600.000.000,00 - $1.800.000.000,00</td>
+                        <td>7.00%</td>
+                        <td>7.00%</td>
+                      </tr>
+                      <tr>
+                        <td>$1.800.000.000,00 - $6.000.000.000,00</td>
+                        <td>6.50%</td>
+                        <td>6.50%</td>
+                      </tr>
+                      <tr>
+                        <td>Excedente</td>
+                        <td>6.00%</td>
+                        <td>6.00%</td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th colspan="3">
+                          Descargar Planilla de Honorarios Completa
+                        </th>
+                      </tr>
+                      <tr>
+                        <td colspan="3">
+                          <button
+                            type="button"
+                            onclick="downloadPlanilla()"
+                            class="btn btn-third"
+                          >
+                            <i class="fas fa-download"></i>
+                            Descargar Planilla
+                          </button>
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <div class="honorarios-calculation">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="honorariosType">Tipo de Honorarios</label>
+                      <select
+                        id="honorariosType"
+                        name="honorariosType"
+                        required
+                      >
+                        <option value="proyecto">Solo Proyecto</option>
+                        <option value="direccion">Solo Dirección</option>
+                        <option value="ambos" selected>
+                          Proyecto y Dirección
+                        </option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="honorariosPercentage"
+                        >Porcentaje a Aplicar</label
+                      >
+                      <input
+                        type="number"
+                        id="honorariosPercentage"
+                        name="honorariosPercentage"
+                        min="0.1"
+                        step="0.01"
+                        value="40.00"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="results-section">
+                    <div class="results-row">
+                      <span class="results-label"
+                        >Honorarios Profesionales:</span
+                      >
+                      <span class="results-value" id="honorariosProfesionales"
+                        >0.00</span
+                      >
+                    </div>
+                    <div class="results-row">
+                      <span class="results-label"
+                        >Aportes Previsionales (16%):</span
+                      >
+                      <span class="results-value" id="aportesPrevisionales"
+                        >0.00</span
+                      >
+                    </div>
+                    <div class="results-row">
+                      <span class="results-label"
+                        >Aportes Colegiales (5%):</span
+                      >
+                      <span class="results-value" id="aportesColegiales"
+                        >0.00</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>Cálculo de Impuestos</h3>
+              <div class="tax-calculator">
+                <div class="tax-section">
+                  <h4>Impuestos Aplicables</h4>
+                  <div class="tax-options">
+                    <div class="tax-option">
+                      <input
+                        type="checkbox"
+                        id="taxIVA"
+                        name="taxIVA"
+                        checked
+                      />
+                      <label for="taxIVA">IVA (21%)</label>
+                    </div>
+                    <div class="tax-option">
+                      <input
+                        type="checkbox"
+                        id="taxIIBB"
+                        name="taxIIBB"
+                        checked
+                      />
+                      <label for="taxIIBB">Ingresos Brutos</label>
+                      <input
+                        type="number"
+                        id="taxIIBBPercentage"
+                        name="taxIIBBPercentage"
+                        min="0.1"
+                        max="infinite"
+                        step="0.01"
+                        value="3.50"
+                        class="small-input"
+                      />
+                      <span>%</span>
+                    </div>
+                    <div class="tax-option">
+                      <input
+                        type="checkbox"
+                        id="taxGanancias"
+                        name="taxGanancias"
+                      />
+                      <label for="taxGanancias">Impuesto a las Ganancias</label>
+                      <input
+                        type="number"
+                        id="taxGananciasPercentage"
+                        name="taxGananciasPercentage"
+                        min="0.1"
+                        max="infinite"
+                        step="0.01"
+                        value="25.00"
+                        class="small-input"
+                      />
+                      <span>%</span>
+                    </div>
+                    <div class="tax-option">
+                      <input
+                        type="checkbox"
+                        id="taxMunicipal"
+                        name="taxMunicipal"
+                      />
+                      <label for="taxMunicipal">Tasa Municipal</label>
+                      <input
+                        type="number"
+                        id="taxMunicipalPercentage"
+                        name="taxMunicipalPercentage"
+                        min="0.1"
+                        max="infinite"
+                        step="0.01"
+                        value="1.20"
+                        class="small-input"
+                      />
+                      <span>%</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="final-results">
+                  <div class="results-row">
+                    <span class="results-label">Honorarios Base:</span>
+                    <span class="results-value" id="honorariosBase">0.00</span>
+                  </div>
+                  <div class="results-row">
+                    <span class="results-label">IVA (21%):</span>
+                    <span class="results-value" id="ivaAmount">0.00</span>
+                  </div>
+                  <div class="results-row">
+                    <span class="results-label">Ingresos Brutos:</span>
+                    <span class="results-value" id="iibbAmount">0.00</span>
+                  </div>
+                  <div class="results-row">
+                    <span class="results-label">Impuesto a las Ganancias:</span>
+                    <span class="results-value" id="gananciasAmount">0.00</span>
+                  </div>
+                  <div class="results-row">
+                    <span class="results-label">Tasa Municipal:</span>
+                    <span class="results-value" id="municipalAmount">0.00</span>
+                  </div>
+                  <div class="results-row total">
+                    <span class="results-label"
+                      >TOTAL HONORARIOS (con impuestos):</span
+                    >
+                    <span class="results-value" id="totalHonorarios">0.00</span>
+                  </div>
+                  <div class="results-row total">
+                    <span class="results-label">TOTAL APORTES:</span>
+                    <span class="results-value" id="totalAportes">0.00</span>
+                  </div>
+                  <div class="results-row grand-total">
+                    <span class="results-label">TOTAL A FACTURAR:</span>
+                    <span class="results-value" id="totalFacturar">0.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-section" id="summarySection">
+              <h3>Resumen General de Cálculo</h3>
+              <div class="summary-content">
+                <div class="results-row">
+                  <span class="results-label">Costo Total de la Obra:</span>
+                  <span class="results-value" id="costoTotalObra">0.00</span>
+                </div>
+                <div class="results-row">
+                  <span class="results-label"
+                    >Total a Facturar (Honorarios + Impuestos):</span
+                  >
+                  <span class="results-value" id="totalAFacturarResumen"
+                    >0.00</span
+                  >
+                </div>
+                <div class="results-row grand-total">
+                  <span class="results-label">TOTAL A FACTURAR:</span>
+                  <span class="results-value" id="totalGeneral">0.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <!-- <button
+                type="button"
+                class="btn btn-secondary"
+                id="showSummaryBtn"
+              >
+                <i class="fas fa-chart-pie"></i> Mostrar Resumen General
+              </button> -->
+              <button type="button" class="btn btn-secondary" id="resetFormBtn">
+                <i class="fas fa-undo"></i> Reiniciar
+              </button>
+              <button type="button" class="btn btn-primary" id="calculateBtn">
+                <i class="fas fa-calculator"></i> Calcular
+              </button>
+              <button
+                type="submit"
+                class="btn btn-third"
+                id="saveCalculationBtn"
+              >
+                <i class="fas fa-save"></i> Guardar Cálculo
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                id="deleteCalculationBtn"
+              >
+                <i class="fas fa-trash"></i> Eliminar Cómputo
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        const menuToggle = document.getElementById("menuToggle");
+        const navMenu = document.querySelector(".navbar nav");
+        const userMenu = document.getElementById("userMenu");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const authButtons = document.getElementById("authButtons");
+
+        // Aplicar siempre el estilo con fondo
+        navbar.classList.add("solidFlex");
+
+        // Mostrar/ocultar el menú de navegación en móvil
+        menuToggle.addEventListener("click", function () {
+          navMenu.classList.toggle("active");
+        });
+
+        // Cerrar el menú de navegación al hacer clic fuera
+        document.addEventListener("click", function (event) {
+          if (
+            !navMenu.contains(event.target) &&
+            !menuToggle.contains(event.target) &&
+            navMenu.classList.contains("active")
+          ) {
+            navMenu.classList.remove("active");
+          }
+        });
+        if (userMenu) {
+          userMenu.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle("active");
+          });
+
+          // Cerrar el menú de usuario al hacer clic fuera
+          document.addEventListener("click", function (event) {
+            if (
+              !dropdownMenu.contains(event.target) &&
+              dropdownMenu.classList.contains("active")
+            ) {
+              dropdownMenu.classList.remove("active");
+            }
+          });
+        }
+      });
+    </script>
+    <script>
+      function downloadPlanilla() {
+        const filePath =
+          "data/documentos/Planilla de Honorarios Completa - Abril 2025.pdf"; // Asegúrate de colocar la ruta correcta
+        const link = document.createElement("a");
+        link.href = filePath;
+        link.download = "Planilla de Honorarios Completa - Abril 2025.pdf"; // El nombre con el que se descargará el archivo
+        link.click();
+      }
+    </script>
+    <!-- Inserta esto al final de tu <body> -->
+    <div id="toast-container" class="toast-container"></div>
+  </body>
+</html>

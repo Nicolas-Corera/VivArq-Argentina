@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VivArq - Conectando profesionales de la construcción</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <script type="module" src="js/firebase-config.js" defer></script>
+    <script type="module" src="js/home.js" defer></script>
+    <script type="module" src="js/projects&professionals.js" defer></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/allProfessionals.css" />
+    <link rel="shortcut icon" href="images/Logo.png" type="image/x-icon" />
+    <script src="js/loadPages.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo" id="logo">
+        <a style="cursor: pointer" class="homeBtn"><h1>VivArq</h1></a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="allProjects.html">Proyectos</a></li>
+          <li>
+            <a href="allProfessionals.html" class="active">Profesionales</a>
+          </li>
+          <li><a href="contactUs.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div>
+        <div class="auth-buttons" id="authButtons">
+          <a href="login.html" class="btn btn-login">Acceder</a>
+        </div>
+        <div class="user-menu" id="userMenu">
+          <!-- Nuevo indicador de notificaciones al lado del menú de usuario -->
+          <div class="notification-indicator" id="userMenuNotification">0</div>
+            <div class="profile-icon">
+              <img id="userAvatar" src="" alt="Avatar" style="display: none" />
+              <i id="defaultIcon" class="fas fa-user"></i>
+            </div>
+          <div class="user-info">
+            <p class="user-name" id="userName">Irwin Williams</p>
+            <p class="accountTypeProfile" id="accountTypeProfile">
+              Personal account
+            </p>
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="chat.html" class="menu-item" id="messagesLink">
+              <i class="fas fa-envelope"></i>Mensajes
+              <span class="count">0</span>
+            </a>
+            <a href="#" class="menu-item" id="accountLink">
+              <i class="fas fa-user"></i>Mi Cuenta
+            </a>
+            <a href="#" class="menu-item" id="settingsLink">
+              <i class="fas fa-cog"></i>Configuración
+            </a>
+            <a href="#" class="menu-item" id="faqLink">
+              <i class="fa-solid fa-circle-question"></i>FAQ
+            </a>
+            <a href="#" class="menu-item logout" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hiddenMenuToggle">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+    <main>
+      <section class="page-header">
+        <div class="container">
+          <h1>Todos los Profesionales</h1>
+          <p>
+            Explora todos los profesionales disponibles en nuestra plataforma
+          </p>
+        </div>
+      </section>
+      <section class="professionals-section">
+        <div class="container">
+          <div class="filters-container">
+            <div class="filters">
+              <div class="filter-group">
+                <label for="specialtyFilter">Especialidad:</label>
+                <select id="specialtyFilter">
+                  <option value="">Todas las especialidades</option>
+                  <option value="Arquitecto">Arquitecto</option>
+                  <option value="Ingeniero">Ingeniero Civil</option>
+                  <option value="Constructor">Constructor</option>
+                  <option value="Electricista">Electricista</option>
+                  <option value="Plomero">Plomero</option>
+                  <option value="Gasista">Gasista</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
+              <button id="applyFilters" class="btn">Aplicar Filtros</button>
+              <button id="resetFilters" class="btn btn-secondary">
+                Resetear
+              </button>
+            </div>
+          </div>
+
+          <div id="professionalsLoading" class="loading-container">
+            <div class="loading">Cargando profesionales...</div>
+          </div>
+
+          <div id="professionalsGrid" class="professionals-grid">
+            <!-- Los profesionales se cargarán aquí dinámicamente -->
+          </div>
+
+          <div id="noProfessionalsMessage" class="no-results hidden">
+            <p>No se encontraron profesionales.</p>
+          </div>
+
+          <div id="loadMoreContainer" class="load-more-container hidden">
+            <button id="loadMoreBtn" class="btn btn-primary">Cargar Más</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3>VivArq</h3>
+          <p>
+            Conectando profesionales de la construcción con Clientes en
+            Argentina.
+          </p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h4>Enlaces</h4>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="allProfessionals.html">Profesionales</a></li>
+            <li><a href="allProjects.html">Proyectos</a></li>
+            <li><a href="contactUs.html">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="faq.html">Preguntas Frecuentes</a></li>
+            <li><a href="terms&conditions.html">Términos y Condiciones</a></li>
+            <li><a href="#privacidad">Política de Privacidad</a></li>
+            <li><a href="#ayuda">Ayuda</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contacto</h4>
+          <ul class="contact-info">
+            <li>
+              <i class="fas fa-map-marker-alt"></i> Buenos Aires, Argentina
+            </li>
+            <!-- <li><i class="fas fa-phone"></i> +54 11 1234-5678</li> -->
+            <li id="openModalBtnEmail" style="cursor: pointer">
+              <i class="fas fa-envelope"></i><a> info@vivarq.com.ar</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 VivArq. Todos los derechos reservados.</p>
+        <span
+          ><p>
+            Creado por
+            <a href="https://www.instagram.com/nicocorera" target="_blank"
+              >Nicolás Corera</a
+            >
+          </p></span
+        >
+      </div>
+    </footer>
+    <div id="emailModal" class="modalEmail">
+      <div class="modal-contentEmail">
+        <span class="close-btnEmail">&times;</span>
+        <h2>Contacto por Email</h2>
+        <form
+          id="emailForm"
+          action="mailto:info@vivarq.com.ar"
+          method="POST"
+          enctype="text/plain"
+          class="formEmial"
+        >
+          <label class="labelEmail" for="subject">Asunto:</label>
+          <select id="subject" name="subject" class="subjectEmail">
+            <option value="Consulta General">Consulta General</option>
+            <option value="Soporte Técnico">Soporte Técnico</option>
+            <option value="Sugerencias">Sugerencias</option>
+          </select>
+          <button class="btnEmail" type="submit">
+            <i class="fa-solid fa-envelope"></i> Redactar Correo
+          </button>
+        </form>
+      </div>
+    </div>
+    <script>
+      // Abre el modal
+      const modal = document.getElementById("emailModal");
+      const openModalBtn = document.getElementById("openModalBtnEmail");
+      const closeBtn = document.getElementsByClassName("close-btnEmail")[0];
+
+      // Abre el modal cuando se hace clic en el botón
+      openModalBtn.onclick = function () {
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden";
+      };
+
+      // Cierra el modal cuando se hace clic en el botón de cierre
+
+      closeBtn.onclick = function () {
+        const modalContent = document.querySelector(".modal-contentEmail");
+        const closeAnimation = modalContent.animate(
+          [
+            { transform: "scale(1)", opacity: 1 },
+            { transform: "scale(0.9)", opacity: 0 },
+          ],
+          {
+            duration: 400,
+            easing: "ease-out",
+          }
+        );
+        closeAnimation.onfinish = function () {
+          modal.style.display = "none";
+          document.body.style.overflow = "auto";
+        };
+      };
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          const modalContent = document.querySelector(".modal-contentEmail");
+          const closeAnimation = modalContent.animate(
+            [
+              { transform: "scale(1)", opacity: 1 },
+              { transform: "scale(0.9)", opacity: 0 },
+            ],
+            {
+              duration: 400,
+              easing: "ease-out",
+            }
+          );
+          closeAnimation.onfinish = function () {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+          };
+        }
+      };
+
+      // Opcional: Si deseas que el formulario se envíe automáticamente al hacer clic en enviar:
+      const emailForm = document.getElementById("emailForm");
+      emailForm.onsubmit = function (event) {
+        event.preventDefault();
+        const subject = document.getElementById("subject").value;
+
+        // Abre el cliente de correo con el asunto y cuerpo seleccionados
+        window.location.href = `mailto:info@vivarq.com.ar?subject=${encodeURIComponent(
+          subject
+        )}`;
+        modal.style.display = "none"; // Cierra el modal después de enviar
+      };
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        const menuToggle = document.getElementById("menuToggle");
+        const navMenu = document.querySelector(".navbar nav");
+        const userMenu = document.getElementById("userMenu");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const authButtons = document.getElementById("authButtons");
+
+        // Aplicar siempre el estilo con fondo
+        navbar.classList.add("solidFlex");
+
+        // Mostrar/ocultar el menú de navegación en móvil
+        menuToggle.addEventListener("click", function () {
+          navMenu.classList.toggle("active");
+        });
+
+        // Cerrar el menú de navegación al hacer clic fuera
+        document.addEventListener("click", function (event) {
+          if (
+            !navMenu.contains(event.target) &&
+            !menuToggle.contains(event.target) &&
+            navMenu.classList.contains("active")
+          ) {
+            navMenu.classList.remove("active");
+          }
+        });
+        if (userMenu) {
+          userMenu.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle("active");
+          });
+
+          // Cerrar el menú de usuario al hacer clic fuera
+          document.addEventListener("click", function (event) {
+            if (
+              !dropdownMenu.contains(event.target) &&
+              dropdownMenu.classList.contains("active")
+            ) {
+              dropdownMenu.classList.remove("active");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
